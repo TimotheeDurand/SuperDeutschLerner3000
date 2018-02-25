@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.2)
-project(SuperDeutschLerner3000)
+project(SuperDeutschLerner3000 C CXX)
 
 set(CMAKE_CXX_STANDARD 11)
 
