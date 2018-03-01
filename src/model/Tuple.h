@@ -13,17 +13,18 @@
 class Tuple
 {
 public:
+	Tuple () : m_translated (""), m_original ("") {}
 	Tuple (std::string originalLanguageWord, std::string translatedLanguageWord) :
-		m_originalLanguageWord (originalLanguageWord),
-		m_translatedLanguageWord (translatedLanguageWord) {}
+		m_original (originalLanguageWord),
+		m_translated (translatedLanguageWord) {}
 
 	//setters
-	void setOLW (std::string& originalLanguageWord) { m_originalLanguageWord = originalLanguageWord; }
-	void setTLW (std::string& translatedLanguageWord) { m_translatedLanguageWord = translatedLanguageWord; }
+	void setOriginal (std::string originalLanguageWord) { m_original = originalLanguageWord; }
+	void setTranslated (std::string translatedLanguageWord) { m_translated = translatedLanguageWord; }
 
 	//getters
-	std::string getTLW () { return m_translatedLanguageWord; }
-	std::string getOLW () { return m_originalLanguageWord; }
+	std::string getTranslated () { return m_translated; }
+	std::string getOriginal () { return m_original; }
 
 	//operators used to serialize / deserialize the object
 	friend std::ostream& operator<<(std::ostream& stream, const Tuple& tuple);
@@ -32,6 +33,6 @@ public:
 protected:
 	//regular expression used to deserialized, to see if the given input matches a Tuple
 
-	std::string m_originalLanguageWord;
-	std::string m_translatedLanguageWord;
+	std::string m_original;
+	std::string m_translated;
 };

@@ -2,7 +2,7 @@
 
 std::ostream& operator<<(std::ostream& os, const Tuple& tuple)
 {
-	os << tuple.m_originalLanguageWord << " : " << tuple.m_translatedLanguageWord;
+	os << tuple.m_original << " : " << tuple.m_translated;
 	// write obj to stream
 	return os;
 }
