@@ -1,0 +1,12 @@
+image: Visual Studio 2017
+
+build_script:
+  - mkdir build
+  - ./createVSProject.bat
+  - msbuild SuperDeutschLerner3000.sln
+
+before_test:
+  - cd bin/Debug
+
+test_script:
+- "Test.exe"
