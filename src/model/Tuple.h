@@ -3,7 +3,7 @@
 #include <string>
 #include <regex>
 
-#define TUPLE_REGEX_STRING "([A-Za-zßüצײÜ]+ )+: ([A-Za-zיטחאשְָֹכֻ ]+ )+"
+#define TUPLE_REGEX_STRING "[a-zßהצü\\s]+\\s:\\s[a-zאגיךטלפשûח\\s]+"
 
 /* Class Tuple:
 	
