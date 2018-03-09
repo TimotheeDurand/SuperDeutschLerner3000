@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <tuple>
 
 #include "src\model\Lesson.h"
 
@@ -12,7 +13,7 @@
 class Parser 
 {
 public:
-	enum WriteStatus{ SUCESS };
-	Lesson parseFile (std::string filePath);
-	WriteStatus writeFile (Lesson &lesson);
+	enum IOStatus{ SUCCESS, CANNOT_OPEN_FILE};
+	std::tuple<Lesson, IOStatus> parseFile (std::string filePath);
+	IOStatus writeFile (Lesson &lesson, std::string filePath);
 };

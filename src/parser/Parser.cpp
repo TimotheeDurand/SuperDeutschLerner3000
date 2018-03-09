@@ -7,13 +7,30 @@
 das Kleid : le vêtement
 drehen : tourner
 sich über jemand lustig machen : se moquer de quelqu'un, rire aux dépend de quelqu'un*/
-Lesson Parser::parseFile (std::string filePath)
+std::tuple<Lesson, Parser::IOStatus> Parser::parseFile (std::string filePath)
 {
+	std::ifstream file (filePath, std::ios::in);
 
-	return Lesson ();
+	Lesson lesson;
+
+	if (file)
+	{
+		file >> lesson;
+	}
+	else return { lesson, CANNOT_OPEN_FILE };
+
+	return { lesson, SUCCESS };
 }
 
-Parser::WriteStatus Parser::writeFile (Lesson & lesson)
+Parser::IOStatus Parser::writeFile (Lesson & lesson, std::string filePath)
 {
-	return WriteStatus ();
+	std::ofstream file (filePath, std::ios::out);
+
+	if (file)
+	{
+		file << lesson;
+	}
+	else return CANNOT_OPEN_FILE;
+
+	return SUCCESS;
 }

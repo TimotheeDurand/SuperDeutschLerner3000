@@ -33,5 +33,6 @@ std::istream& operator>>(std::istream& is, Lesson& lesson)
 		if(t.isValid())
 			lesson.m_dictionnary.push_back (t);
 	}
+
 	return is;
 }
