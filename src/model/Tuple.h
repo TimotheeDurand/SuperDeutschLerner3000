@@ -1,9 +1,9 @@
-#pragma once
+ï»¿#pragma once
 
 #include <string>
 #include <regex>
 
-#define TUPLE_REGEX_STRING "[a-zßäöü\\s]+\\s:\\s[a-zàâéêèìôùûç\\s]+"
+#define TUPLE_REGEX_STRING "[a-zÃ¤Ã¶Ã¼ÃŸ\\s]+\\s:\\s[a-zÃ Ã¢Ã§Ã©Ã¨ÃªÃ«Ã®Ã¯Ã´Ã»Ã¹Ã¼Ã¿Ã±Ã¦Å“\\s]+"
 
 /* Class Tuple:
 	
@@ -25,6 +25,7 @@ public:
 	//getters
 	std::string getTranslated () { return m_translated; }
 	std::string getOriginal () { return m_original; }
+	bool isValid () { return m_valid; }
 
 	//operators used to serialize / deserialize the object
 	friend std::ostream& operator<<(std::ostream& stream, const Tuple& tuple);
@@ -35,4 +36,6 @@ protected:
 
 	std::string m_original;
 	std::string m_translated;
+
+	bool m_valid = false;
 };

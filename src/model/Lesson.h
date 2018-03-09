@@ -16,8 +16,8 @@ public:
 	Lesson ();
 	Lesson (DictionnaryType & dictionnary) : m_dictionnary(dictionnary) {}
 	DictionnaryType & getDictionnary () { return m_dictionnary; }
-	friend std::ostream& operator<< (std::ostream& stream, const Lesson& tuple);
-	friend std::istream& operator>>(std::istream& is, Tuple& tuple);
+	friend std::ostream& operator<< (std::ostream& stream, const Lesson& lesson);
+	friend std::istream& operator>>(std::istream& is, Lesson& lesson);
 
 protected:
 	DictionnaryType m_dictionnary;
