@@ -1,7 +1,10 @@
 #pragma once
 
+#define DEFAULT_LESSON_FILE_EXTENSION ".les"
+
 #include <string>
 #include <tuple>
+#include <list>
 
 #include "src\model\Lesson.h"
 
@@ -14,6 +17,7 @@ class Parser
 {
 public:
 	enum IOStatus{ SUCCESS, CANNOT_OPEN_FILE};
-	std::tuple<Lesson, IOStatus> parseFile (std::string filePath);
+	std::tuple<Lesson, Parser::IOStatus> parseFile (std::string filePath);
 	IOStatus writeFile (Lesson &lesson, std::string filePath);
+	std::list<std::string> listLessonsInFolder (std::string folderPath);
 };

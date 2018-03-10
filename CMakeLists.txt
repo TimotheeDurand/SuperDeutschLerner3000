@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.2)
 project(SuperDeutschLerner3000 C CXX)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules/)
 set(EXECUTABLE_OUTPUT_PATH ../bin/)

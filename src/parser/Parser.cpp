@@ -1,6 +1,7 @@
 #include "Parser.h"
 
 #include <fstream>
+#include <filesystem>
 
 /*structure of translation files :
 
@@ -33,4 +34,19 @@ Parser::IOStatus Parser::writeFile (Lesson & lesson, std::string filePath)
 	else return CANNOT_OPEN_FILE;
 
 	return SUCCESS;
+}
+
+std::list<std::string> Parser::listLessonsInFolder (std::string folderPath)
+{
+	std::list<std::string> list;
+
+	for (std::experimental::filesystem::directory_entry it : std::experimental::filesystem::directory_iterator (folderPath))
+	{
+		if (it.path ().extension().string() == DEFAULT_LESSON_FILE_EXTENSION)
+		{
+			list.push_back (it.path().filename().string ());
+		}
+	}
+
+	return list;
 }
