@@ -16,7 +16,7 @@ void StateInitial::showLessons (Controller & controller) const
 void StateInitial::startTraining (Controller & controller, std::string lessonFileName) const
 {
 	//auto [lesson, status] = controller.getParser ().parseFile (controller.getFolderPath + lessonFileName);
-	std::tuple<Lesson, Parser::IOStatus> test = controller.getParser ().parseFile (controller.getFolderPath + lessonFileName);
+	std::tuple<Lesson, Parser::IOStatus> test = controller.getParser ().parseFile (controller.getFolderPath() + lessonFileName);
 	
 
 }
