@@ -35,9 +35,14 @@ void Controller::startTraining (std::string lessonFileName)
 	currentState->startTraining (*this, lessonFileName);
 }
 
+void Controller::answer (std::string givenAnswer)
+{
+	currentState->answer (*this, givenAnswer);
+}
+
 void Controller::closeTraining ()
 {
-	currentState->closeTraining ();
+	currentState->closeTraining (*this);
 }
 
 void Controller::createNewLesson ()

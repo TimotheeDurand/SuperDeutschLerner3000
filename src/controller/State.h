@@ -11,8 +11,10 @@ class State
 public:
 	virtual void selectNewLessonFolder (Controller & controller, std::string folderPath) const {}
 	virtual void showLessons (Controller & controller) const {}
+
 	virtual void startTraining (Controller & controller, std::string lessonFileName) const {}
-	virtual void closeTraining () const {}
+	virtual void answer (Controller & controller, std::string givenAnswer) const {}
+	virtual void closeTraining (Controller & controller) const {}
 	
 
 	virtual void createNewLesson () const {}

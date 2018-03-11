@@ -13,6 +13,13 @@ public:
 	void setEventDispatcher (CLIEventDispatcher* dispatcher) { eventDispatcher = dispatcher; }
 	void showCommandList ();
 	void showUnknownCommand (std::string command);
+	void showPathMissing ();
+	void showFileMissing ();
+	virtual void showFileError (std::string fileName) override;
+	virtual void showTrainingStarted (std::string fileName) override;
+	virtual void showTrainingEnded (int correctAnswers, int totalAnswers) override;
+	virtual void giveAnswer (std::string originalWord, std::string translatedWord, bool success) override;
+	virtual void askWord (std::string word) override;
 
 private:
 	bool listenKeyBoardInput ();

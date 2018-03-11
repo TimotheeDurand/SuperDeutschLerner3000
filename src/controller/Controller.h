@@ -4,9 +4,7 @@
 #include <filesystem>
 
 #include "State.h"
-
 #include "src\parser\Parser.h"
-
 #include "src\view\GenericViewer.h"
 
 class State;
@@ -20,7 +18,10 @@ public:
 	Controller ();
 	virtual ~Controller ();
 
+	//functions available for states
+
 	Parser& getParser () { return parser; }
+
 	GenericViewer* getViewer () { return viewer; }
 	void setViewer (GenericViewer* viewer) { this->viewer = viewer; }
 
@@ -28,15 +29,18 @@ public:
 	void setFolderPath (std::string folderPath ) { this->folderPath = folderPath; }
 
 	void setCurrentState (State * state) { currentState = state; }
-	const State* getCurrentState () { return currentState; }
-	const StateInitial* getStateInitial () { return stateInitial; }
-	const StateEditing* getStateEditing () { return stateEditing; }
-	const StateTraining* getStateTraining () { return stateTraining; }
+	State* getCurrentState () { return currentState; }
+	StateInitial* getStateInitial () { return stateInitial; }
+	StateEditing* getStateEditing () { return stateEditing; }
+	StateTraining* getStateTraining () { return stateTraining; }
+
+	// functions available for the viewer :
 
 	void selectNewLessonFolder (std::string folderPath);
 	void showLessons ();
 
 	void startTraining (std::string lessonFileName);
+	void answer (std::string givenAnswer);
 	void closeTraining ();
 
 	void createNewLesson ();
@@ -47,13 +51,13 @@ public:
 	void deleteTuple ();
 
 private:
-	const State *currentState;
-	const StateInitial *stateInitial;
-	const StateTraining *stateTraining;
-	const StateEditing *stateEditing;
+	State *currentState;
+	StateInitial *stateInitial;
+	StateTraining *stateTraining;
+	StateEditing *stateEditing;
 	
 	Parser parser;
 	std::string folderPath = std::experimental::filesystem::current_path ().string();
 
-	GenericViewer *viewer;
+	GenericViewer *viewer = NULL;
 };

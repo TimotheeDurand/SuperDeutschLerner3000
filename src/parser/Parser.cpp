@@ -3,11 +3,10 @@
 #include <fstream>
 #include <filesystem>
 
-/*structure of translation files :
+// filesystem is not implemented as default in VS2017 as of version 15.5, this will change later
+// to std::filesystem.
+using namespace std::experimental::filesystem;
 
-das Kleid : le vêtement
-drehen : tourner
-sich über jemand lustig machen : se moquer de quelqu'un, rire aux dépend de quelqu'un*/
 std::tuple<Lesson, Parser::IOStatus> Parser::parseFile (std::string filePath)
 {
 	std::ifstream file (filePath, std::ios::in);
@@ -40,7 +39,7 @@ std::list<std::string> Parser::listLessonsInFolder (std::string folderPath)
 {
 	std::list<std::string> list;
 
-	for (std::experimental::filesystem::directory_entry it : std::experimental::filesystem::directory_iterator (folderPath))
+	for (directory_entry it : directory_iterator (folderPath))
 	{
 		if (it.path ().extension().string() == DEFAULT_LESSON_FILE_EXTENSION)
 		{

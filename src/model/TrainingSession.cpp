@@ -1,6 +1,8 @@
 #include "TrainingSession.h"
 
 #include <algorithm>
+#include <random>
+#include <chrono>
 
 TrainingSession::TrainingSession (Lesson lesson) : m_lesson (lesson)
 {
@@ -11,7 +13,8 @@ TrainingSession::TrainingSession (Lesson lesson) : m_lesson (lesson)
 	{
 		indexes[i] = i;
 	}
-	std::random_shuffle (&indexes[0], &indexes[size]);
+	unsigned seed = std::chrono::system_clock::now ().time_since_epoch ().count ();
+	std::shuffle (&indexes[0], &indexes[size], std::default_random_engine (seed));
 	for (size_t i = 0; i < size; i++)
 	{
 		unansweredTuples.push_back (dict[indexes[i]]);
@@ -49,7 +52,20 @@ int TrainingSession::getRemaining ()
 	return unansweredTuples.size ();
 }
 
+int TrainingSession::getCorrectAnswers ()
+{
+	int correctCount = 0;
+	for (auto it : answeredTuples)
+		correctCount += it.second;
+	return correctCount;
+}
+
+int TrainingSession::getTotalAnswers ()
+{
+	return answeredTuples.size ();
+}
+
 bool TrainingSession::isOver ()
 {
-	return getRemaining() > 0;
+	return getRemaining() == 0;
 }

@@ -12,6 +12,18 @@ CLIEventDispatcher::CLIEventDispatcher (Controller * controller, GenericViewer *
 
 bool CLIEventDispatcher::handleUserInput (std::string userInput)
 {
+	if (m_controller->getCurrentState () == (State*)m_controller->getStateTraining ())
+	{
+		if (userInput == "STOP")
+		{
+			m_controller->closeTraining ();
+			return true;
+		}
+		
+		m_controller->answer (userInput);
+		return true;
+	}
+
 	vector<string> argv;
 	char delimiter = ' ';
 	//split user input 
@@ -41,16 +53,27 @@ bool CLIEventDispatcher::handleUserInput (std::string userInput)
 		{
 			m_controller->selectNewLessonFolder (argv[1]);
 		}
+		else
+			m_cliviewer->showPathMissing ();
 		return true;
 	}
-	else if (argv[0] == "help")
+	else if (argv[0] == "help" || argv[0] == "h")
 	{
 		m_cliviewer->showCommandList ();
 		return true;
 	}
-	else if (argv[0] == "lessons" || argv[0] == "l")
+	else if (argv[0] == "lessons" || argv[0] == "ls")
 	{
 		m_controller->showLessons ();
+	}
+	else if (argv[0] == "train" || argv[0] == "t")
+	{
+		if (argc > 1)
+		{
+			m_controller->startTraining (argv[1]);
+		}
+		else
+			m_cliviewer->showFileMissing ();
 	}
 	else
 	{

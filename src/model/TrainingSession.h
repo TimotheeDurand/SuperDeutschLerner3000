@@ -7,11 +7,14 @@
 
 class TrainingSession
 {
+public:
 	TrainingSession (Lesson lesson);
 
 	std::string getNext ();
 	std::pair<Tuple, bool > answer (std::string);
 	int getRemaining ();
+	int getCorrectAnswers ();
+	int getTotalAnswers ();
 	bool isOver ();
 	std::list<std::pair<Tuple, bool >> getAnswers () { return answeredTuples; }
 	
