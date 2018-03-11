@@ -1,7 +1,12 @@
 file(GLOB_RECURSE SOURCE_FILES "*.cpp")
-file(GLOB_RECURSE HEADER_FILES "*.h")
+file(GLOB_RECURSE HEADER_FILES "*.h" "*.hpp")
+file(GLOB_RECURSE LIBS_SOURCES "../libs/*.hpp")
 file(GLOB_RECURSE MAIN "main.cpp")
 list(REMOVE_ITEM SOURCE_FILES ${MAIN})
+
+file(GLOB_RECURSE EXAMPLES_LESSONS "${PROJECT_SOURCE_DIR}/examples/*.les")
+
+add_executable (SuperDeutschLerner3000 main.cpp)
 
 # Needed for having the good directory tree in the Visual studio project
 foreach(source IN LISTS SOURCE_FILES)
@@ -18,8 +23,15 @@ foreach(header IN LISTS HEADER_FILES)
     source_group("${header_path_msvc}" FILES "${header}")
 endforeach()
 
-MESSAGE( STATUS "Source_files         " ${SOURCE_FILES} )
+if (MSVC_VERSION)
+	add_custom_command(TARGET SuperDeutschLerner3000 POST_BUILD
+		COMMAND ${CMAKE_COMMAND} -E copy_if_different  
+			${EXAMPLES_LESSONS}
+			${EXECUTABLE_OUTPUT_PATH})         
 
-add_library (DeutschLernerLibrary ${SOURCE_FILES} ${HEADER_FILES})
-add_executable (SuperDeutschLerner3000 main.cpp)
+	set_target_properties(SuperDeutschLerner3000 PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "${EXECUTABLE_OUTPUT_PATH}")
+endif()
+
+add_library (DeutschLernerLibrary ${SOURCE_FILES} ${HEADER_FILES} ${LIBS_SOURCES})
+
 target_link_libraries (SuperDeutschLerner3000 DeutschLernerLibrary)

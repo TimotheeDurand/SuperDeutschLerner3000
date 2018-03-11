@@ -1,4 +1,4 @@
-﻿#include "catch.hpp"
+﻿#include "libs\catch.hpp"
 #include "src\model\Lesson.h"
 #include <sstream>
 

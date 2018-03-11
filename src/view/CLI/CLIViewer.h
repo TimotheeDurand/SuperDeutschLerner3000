@@ -12,6 +12,7 @@ public:
 	virtual void displayLessonList (std::string folderPath, std::list<std::string>& lessonList) override;
 	void setEventDispatcher (CLIEventDispatcher* dispatcher) { eventDispatcher = dispatcher; }
 	void showCommandList ();
+	void showWorkingDirectory (std::string workingDirectory);
 	void showUnknownCommand (std::string command);
 	void showPathMissing ();
 	void showFileMissing ();

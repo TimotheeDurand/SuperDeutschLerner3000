@@ -13,6 +13,10 @@ std::tuple<Lesson, Parser::IOStatus> Parser::parseFile (std::string filePath)
 
 	Lesson lesson;
 
+	// add utf8 support WIP
+	//std::locale utf8_locale (std::locale (), new std::codecvt_utf8<wchar_t>);
+	//file.imbue (utf8_locale);
+
 	if (file)
 	{
 		file >> lesson;

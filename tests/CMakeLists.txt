@@ -1,4 +1,5 @@
 file(GLOB_RECURSE TEST_SOURCES "*.cpp")
+file(GLOB_RECURSE LIBS_SOURCES "../libs/*.hpp")
 add_definitions (-DBOOST_TEST_DYN_LINK)
-add_executable (Test ${TEST_SOURCES} catch.hpp)
+add_executable (Test ${TEST_SOURCES} ${LIBS_SOURCES})
 target_link_libraries (Test DeutschLernerLibrary)
