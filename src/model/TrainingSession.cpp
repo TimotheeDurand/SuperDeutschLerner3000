@@ -7,21 +7,21 @@
 TrainingSession::TrainingSession (Lesson lesson) : m_lesson (lesson)
 {
 	DictionnaryType dict = m_lesson.getDictionnary ();
-	size_t size = m_lesson.getDictionnary ().size ();
+	int size = m_lesson.getDictionnary ().size ();
 	int *indexes = new int[dict.size ()];
-	for (size_t i = 0; i < size; i++)
+	for (int i = 0; i < size; i++)
 	{
 		indexes[i] = i;
 	}
 	unsigned seed = std::chrono::system_clock::now ().time_since_epoch ().count ();
 	std::shuffle (&indexes[0], &indexes[size], std::default_random_engine (seed));
-	for (size_t i = 0; i < size; i++)
+	for (int i = 0; i < size; i++)
 	{
 		unansweredTuples.push_back (dict[indexes[i]]);
 	}
 }
 
-std::string TrainingSession::getNext ()
+QString TrainingSession::getNext ()
 {
 	bool askTranslation = rand () % 2;
 
@@ -33,9 +33,9 @@ std::string TrainingSession::getNext ()
 	return tupleAsked.first.getTranslated ();
 }
 
-std::pair<Tuple, bool > TrainingSession::answer (std::string givenAnswer)
+QPair<Tuple, bool > TrainingSession::answer (QString givenAnswer)
 {
-	std::string stringAsked;
+	QString stringAsked;
 
 	if (tupleAsked.second)
 		stringAsked = tupleAsked.first.getTranslated ();

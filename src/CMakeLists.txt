@@ -24,14 +24,30 @@ foreach(header IN LISTS HEADER_FILES)
 endforeach()
 
 if (MSVC_VERSION)
+	#copy lesson files
 	add_custom_command(TARGET SuperDeutschLerner3000 POST_BUILD
 		COMMAND ${CMAKE_COMMAND} -E copy_if_different  
 			${EXAMPLES_LESSONS}
-			${EXECUTABLE_OUTPUT_PATH})         
+			${EXECUTABLE_OUTPUT_PATH})    
+
+	#copy Qt Dll
+	add_custom_command(
+    TARGET SuperDeutschLerner3000 POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        $<TARGET_FILE:Qt5::Core>
+        $<TARGET_FILE_DIR:SuperDeutschLerner3000>
+)
 
 	set_target_properties(SuperDeutschLerner3000 PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "${EXECUTABLE_OUTPUT_PATH}")
 endif()
 
 add_library (DeutschLernerLibrary ${SOURCE_FILES} ${HEADER_FILES} ${LIBS_SOURCES})
+
+# Find the QtWidgets library
+set(CMAKE_INCLUDE_CURRENT_DIR ON) # Find includes in corresponding build directories
+set(CMAKE_AUTOMOC ON) # Instruct CMake to run moc automatically when needed.
+set(CMAKE_PREFIX_PATH "C:/Qt/5.10.1/msvc2017_64") # Change this to your own
+find_package(Qt5Core REQUIRED)
+target_link_libraries(DeutschLernerLibrary Qt5::Core)
 
 target_link_libraries (SuperDeutschLerner3000 DeutschLernerLibrary)

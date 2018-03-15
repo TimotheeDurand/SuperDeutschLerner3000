@@ -5,13 +5,13 @@
 unsigned int parseTupleTest () 
 {
 	Tuple tuple;
-	std::string inputString("das Kleid : le vêtement");
-	std::istringstream ss(inputString);
+	QString inputString = QString::fromUtf8("das Kleid : le vêtement");
+	QTextStream ss(&inputString);
 	ss >> tuple;
 
-	if (tuple.getOriginal () != "das Kleid")
+	if (tuple.getOriginal () != QString::fromUtf8("das Kleid"))
 		return 1;
-	if (tuple.getTranslated () != "le vêtement")
+	if (tuple.getTranslated () != QString::fromUtf8("le vêtement"))
 		return 2;
 	return 0;
 }
@@ -19,13 +19,15 @@ unsigned int parseTupleTest ()
 unsigned int printTupleTest () 
 {
 	Tuple tuple;
-	tuple.setOriginal ("das Kleid");
-	tuple.setTranslated ("le vêtement");
+	tuple.setOriginal (QString::fromUtf8("das Kleid"));
+	tuple.setTranslated (QString::fromUtf8("le vêtement"));
 	
-	std::ostringstream ss;
+	QString input;
+	QTextStream ss(&input);
 
 	ss << tuple;
-	if (ss.str () != "das Kleid : le vêtement")
+
+	if (ss.readAll() != QString::fromUtf8("das Kleid : le vêtement"))
 		return 1;
 	return 0;
 }

@@ -8,7 +8,7 @@ void StateTraining::createTrainingSession (Controller &controller, Lesson &lesso
 	controller.getViewer ()->askWord (currentTrainingSession->getNext ());
 }
 
-void StateTraining::answer (Controller & controller, std::string givenAnswer) const
+void StateTraining::answer (Controller & controller, QString givenAnswer) const
 {
 	auto [tuple, wellAnswered] = currentTrainingSession->answer (givenAnswer);
 	controller.getViewer ()->giveAnswer (tuple.getOriginal (), tuple.getTranslated(), wellAnswered);

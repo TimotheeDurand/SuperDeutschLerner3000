@@ -1,48 +1,53 @@
 #include "CLIViewer.h"
-#include <iostream>
-#include <iomanip>
-#include <libs\rang.hpp>
 
-using namespace std;
-using namespace rang;
+CLIViewer::CLIViewer () : cout(stdout, QIODevice::WriteOnly), cin (stdin, QIODevice::ReadOnly)
+{
+}
 
 void CLIViewer::launchUserInterface ()
 {
-	cout << "SuperDeutschLerner3000 started. For a command list type \"help\"" << endl << endl;
+	cout << "SuperDeutschLerner3000 started. For a command list type \"help\"" << endl;
 
-	cout << fg::yellow << "SDL3k> " << fg::reset;
-
-	while (listenKeyBoardInput ()) cout << endl << fg::yellow << "SDL3k> " << fg::reset;
+	do cout << endl << "SDL3k> " << flush; while (listenKeyBoardInput ());
 
 	cout << "bye" << endl;
 }
 
-void CLIViewer::displayLessonList (std::string folderPath, std::list<std::string>& lessonList)
+void CLIViewer::displayLessonList (QDir folder, QFileInfoList& lessonList)
 {
-	cout << "displaying lessons in: " << folderPath << endl << endl;
-	for (auto it : lessonList)
+	cout << "displaying lessons in: " << folder.path() << endl << endl;
+	for (auto fileInfo : lessonList)
 	{
-		cout << it << endl;
+		cout << fileInfo.fileName() << endl;
 	}
 }
 
 void CLIViewer::showCommandList ()
 {
-	int cmdw = 25;
-	cout << setw (cmdw) << left << "pwd" << " - show the current working directory" << endl;
-	cout << setw (cmdw) << left << "cd [dir]" << " - change current working directory to [dir]" << endl;
-	cout << setw (cmdw) << left << "help (h)" << " - display command list" << endl;
-	cout << setw (cmdw) << left << "lessons (ls)" << " - show lessons in the current directory" << endl;
-	cout << setw (cmdw) << left << "train (t) [file.les]" << " - start a training session on the [file.les]" << endl;
-	cout << setw (cmdw) << left << "exit" << " - exit SDL3k" << endl;
+	QList<QPair<QString, QString>> cmdHelps;
+	cmdHelps.push_back ({ "pwd", "show the current working directory" });
+	cmdHelps.push_back ({ "cd [dir]", "change current working directory to [dir]" });
+	cmdHelps.push_back ({ "help (h)", "display command list" });
+	cmdHelps.push_back ({ "lessons (ls)", "show the current working directory" });
+	cmdHelps.push_back ({ "train (t) [file.les]", "start a training session on the [file.les]" });
+	cmdHelps.push_back ({ "exit", "exit SDL3k" });
+	
+	for (auto pair : cmdHelps)
+	{
+		cout.setFieldWidth (25);
+		cout << left << pair.first;
+		cout.setFieldWidth (0);
+		cout << pair.second;
+		cout << endl;
+	}
 }
 
-void CLIViewer::showWorkingDirectory (std::string workingDirectory)
+void CLIViewer::showWorkingDirectory (QDir dir)
 {
-	cout << workingDirectory << endl;
+	cout << dir.path() << endl;
 }
 
-void CLIViewer::showUnknownCommand (std::string command)
+void CLIViewer::showUnknownCommand (QString command)
 {
 	cout << "Unknown command: \'" << command << '\'' << endl;
 }
@@ -57,44 +62,48 @@ void CLIViewer::showFileMissing ()
 	cout << "Please provide a lesson file name" << endl;
 }
 
-void CLIViewer::showFileError (std::string fileName)
+void CLIViewer::showFileError (QFileInfo fileInfo)
 {
-	cout << fg::red << "Error" << fg::reset << " : could not open file \'" << fileName << '\''<< endl;
+	cout << "Error" << " : could not open file \'" << fileInfo.fileName() << '\''<< endl;
 }
 
-void CLIViewer::showTrainingStarted (std::string fileName)
+void CLIViewer::showTrainingStarted (QFileInfo fileInfo)
 {
-	cout << fg::green << "TRAINING STARTED" << fg::reset << endl;
+	cout << "TRAINING STARTED" << endl;
 	cout << "To stop training, type \"STOP\"" << endl;
-	cout << "lesson selected : " << fileName << endl;
-	cout << fg::green << "GOOD LUCK" << fg::reset << endl << endl;
+	cout << "lesson selected : " << fileInfo.fileName() << endl;
+	cout << "GOOD LUCK" << endl << endl;
 }
 
 void CLIViewer::showTrainingEnded (int correctAnswers, int totalAnswers)
 {
-	cout << fg::green << "TRAINING SESSION OVER" << fg::reset << endl;
-	cout << "Correct answers: " << fg::green << setw(4) << correctAnswers << fg::reset << endl;
-	cout << "Errors: " << fg::red << setw(9+4) << (totalAnswers - correctAnswers) << fg::reset << endl;
+	cout << "TRAINING SESSION OVER" << endl;
+	cout << "Correct answers: ";
+	cout.setFieldWidth (4);
+	cout << correctAnswers << endl;
+	cout << "Errors: ";
+	cout.setFieldWidth (9+4); 
+	cout << (totalAnswers - correctAnswers) << endl;
 }
 
-void CLIViewer::giveAnswer (std::string originalWord, std::string translatedWord, bool success)
+void CLIViewer::giveAnswer (QString originalWord, QString translatedWord, bool success)
 {
 	if (success)
-		cout << originalWord << " : " << translatedWord << fg::green << " CORRECT" << fg::reset << endl;
+		cout << originalWord << " : " << translatedWord << " CORRECT" << endl;
 	else
-		cout << originalWord << " : " << translatedWord << fg::red << " INCORRECT" << fg::reset << endl;
+		cout << originalWord << " : " << translatedWord << " INCORRECT" << endl;
 	cout << endl;
 }
 
-void CLIViewer::askWord (std::string word)
+void CLIViewer::askWord (QString word)
 {
 	cout << "What's the meaning of : \"" << word << '\"' << endl;
 }
 
 bool CLIViewer::listenKeyBoardInput ()
 {
-	std::string userInput;
-	std::getline (std::cin, userInput);
+	QString userInput;
+	userInput = cin.readLine ();
 	cout << endl;
 	return eventDispatcher->handleUserInput (userInput);
 }

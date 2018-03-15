@@ -13,7 +13,7 @@ class CLIEventDispatcher : public GenericEventDispatcher
 public:
 	CLIEventDispatcher (Controller* controller, GenericViewer* viewer);
 		
-	bool handleUserInput (std::string userInput);
+	bool handleUserInput (QString userInput);
 
 private:
 	CLIViewer * m_cliviewer;

@@ -9,11 +9,11 @@ class Controller;
 class State
 {
 public:
-	virtual void selectNewLessonFolder (Controller & controller, std::string folderPath) const {}
+	virtual void selectNewLessonFolder (Controller & controller, QDir dir) const {}
 	virtual void showLessons (Controller & controller) const {}
 
-	virtual void startTraining (Controller & controller, std::string lessonFileName) const {}
-	virtual void answer (Controller & controller, std::string givenAnswer) const {}
+	virtual void startTraining (Controller & controller, QFileInfo lessonFileInfo) const {}
+	virtual void answer (Controller & controller, QString givenAnswer) const {}
 	virtual void closeTraining (Controller & controller) const {}
 	
 

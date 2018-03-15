@@ -2,9 +2,9 @@
 
 #define DEFAULT_LESSON_FILE_EXTENSION ".les"
 
-#include <string>
 #include <tuple>
-#include <list>
+#include <QDir>
+#include <QFileInfo>
 
 #include "src\model\Lesson.h"
 
@@ -17,7 +17,7 @@ class Parser
 {
 public:
 	enum IOStatus{ SUCCESS, CANNOT_OPEN_FILE};
-	std::tuple<Lesson, Parser::IOStatus> parseFile (std::string filePath);
-	IOStatus writeFile (Lesson &lesson, std::string filePath);
-	std::list<std::string> listLessonsInFolder (std::string folderPath);
+	std::tuple<Lesson, Parser::IOStatus> parseFile (const QFileInfo &fileInfos);
+	IOStatus writeFile (Lesson &lesson, const QFileInfo &fileInfos);
+	QFileInfoList listLessonsInFolder (const QDir &dir);
 };

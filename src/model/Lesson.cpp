@@ -5,28 +5,32 @@ Lesson::Lesson ()
 
 }
 
-std::ostream& operator<<(std::ostream& os, const Lesson& lesson)
+QTextStream& operator<<(QTextStream& os, const Lesson& lesson)
 {
 	for (auto it : lesson.m_dictionnary)
 	{
-		os << it << std::endl;
+		os << it << endl;
 	}
 
 	return os;
 }
 
-std::istream& operator>>(std::istream& is, Lesson& lesson)
+QTextStream& operator>>(QTextStream& is, Lesson& lesson)
 {
 	// retrieving the number of lines == the number of tuples in our stream
-	std::ptrdiff_t count = std::count (std::istreambuf_iterator<char> (is),
-		std::istreambuf_iterator<char> (), '\n');
+	int lineCount = 0;
+	while (!is.atEnd ())
+	{
+		is.readLine ();
+		lineCount++;
+	}
 	
-	lesson.m_dictionnary.reserve (count+1);
-
-	is.seekg (0, std::ios::beg);
+	lesson.m_dictionnary.reserve (lineCount +1);
+	
+	is.seek (0);
 
 	//parsing the stream
-	while (is.peek() != EOF)
+	while (!is.atEnd())
 	{
 		Tuple t;
 		is >> t;

@@ -5,15 +5,15 @@
 unsigned int parseLessonTest () 
 {
 	Lesson lesson;
-	std::string inputString("das Kleid : le vêtement\ndie Katze :fail le chat\nlernen : apprendre");
-	std::istringstream ss(inputString);
+	QString inputString = QString::fromUtf8("das Kleid : le vêtement\ndie Katze :fail le chat\nlernen : apprendre");
+	QTextStream ss(&inputString);
 	ss >> lesson;
 	Tuple t = lesson.getDictionnary ().at (0);
 	Tuple t3 = lesson.getDictionnary ().at (1);
-	if (t.getOriginal () == "das Kleid"
-		&& t.getTranslated () == "le vêtement"
-		&& t3.getOriginal () == "lernen"
-		&& t3.getTranslated () == "apprendre")
+	if (t.getOriginal () == QString::fromUtf8("das Kleid")
+		&& t.getTranslated () == QString::fromUtf8("le vêtement")
+		&& t3.getOriginal () == QString::fromUtf8("lernen")
+		&& t3.getTranslated () == QString::fromUtf8("apprendre"))
 		return 0;
 	return 1;
 }
@@ -21,26 +21,28 @@ unsigned int parseLessonTest ()
 unsigned int printLessonTest () 
 {
 	Tuple tuple;
-	tuple.setOriginal ("das Kleid");
-	tuple.setTranslated ("le vêtement");
+	tuple.setOriginal (QString::fromUtf8("das Kleid"));
+	tuple.setTranslated (QString::fromUtf8("le vêtement"));
 
 	Tuple tuple2;
-	tuple2.setOriginal ("lernen");
-	tuple2.setTranslated ("apprendre");
+	tuple2.setOriginal (QString::fromUtf8("lernen"));
+	tuple2.setTranslated (QString::fromUtf8("apprendre"));
 
 	DictionnaryType dict;
 	dict.push_back (tuple);
 	dict.push_back (tuple2);
 
 	Lesson lesson (dict);
-	std::stringstream ss;
-	ss << "das Kleid : le vêtement" << std::endl;
-	ss << "lernen : apprendre" << std::endl;
+	QString input;
+	QTextStream ss (&input);
+	ss << QString::fromUtf8("das Kleid : le vêtement") << endl;
+	ss << QString::fromUtf8("lernen : apprendre") << endl;
 
-	std::stringstream ss2;
+	QString input2;
+	QTextStream ss2(&input2);
 	ss2 << lesson;
 
-	if (ss.str () != ss2.str ())
+	if (ss.readAll() != ss2.readAll ())
 		return 1;
 
 	return 0;

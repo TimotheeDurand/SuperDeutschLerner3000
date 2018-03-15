@@ -3,28 +3,34 @@
 #include "src\view\GenericViewer.h"
 #include "CLIEventDispatcher.h"
 
+#include <QTextStream>
+#include <stdio.h>
+
 class CLIEventDispatcher;
 
 class CLIViewer : public GenericViewer
 {
 public:
+	CLIViewer ();
 	virtual void launchUserInterface () override;
-	virtual void displayLessonList (std::string folderPath, std::list<std::string>& lessonList) override;
+	virtual void displayLessonList (QDir folder, QFileInfoList& lessonList) override;
 	void setEventDispatcher (CLIEventDispatcher* dispatcher) { eventDispatcher = dispatcher; }
 	void showCommandList ();
-	void showWorkingDirectory (std::string workingDirectory);
-	void showUnknownCommand (std::string command);
+	void showWorkingDirectory (QDir dir);
+	void showUnknownCommand (QString command);
 	void showPathMissing ();
 	void showFileMissing ();
-	virtual void showFileError (std::string fileName) override;
-	virtual void showTrainingStarted (std::string fileName) override;
+	virtual void showFileError (QFileInfo fileInfos) override;
+	virtual void showTrainingStarted (QFileInfo fileInfos) override;
 	virtual void showTrainingEnded (int correctAnswers, int totalAnswers) override;
-	virtual void giveAnswer (std::string originalWord, std::string translatedWord, bool success) override;
-	virtual void askWord (std::string word) override;
+	virtual void giveAnswer (QString originalWord, QString translatedWord, bool success) override;
+	virtual void askWord (QString word) override;
 
 private:
 	bool listenKeyBoardInput ();
 
 	CLIEventDispatcher* eventDispatcher;
+	QTextStream cout; 
+	QTextStream cin;
 
 };

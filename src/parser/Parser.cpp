@@ -7,49 +7,38 @@
 // to std::filesystem.
 using namespace std::experimental::filesystem;
 
-std::tuple<Lesson, Parser::IOStatus> Parser::parseFile (std::string filePath)
+std::tuple<Lesson, Parser::IOStatus> Parser::parseFile (const QFileInfo& fileInfo)
 {
-	std::ifstream file (filePath, std::ios::in);
-
+	QFile file (fileInfo.filePath ());
 	Lesson lesson;
 
-	// add utf8 support WIP
-	//std::locale utf8_locale (std::locale (), new std::codecvt_utf8<wchar_t>);
-	//file.imbue (utf8_locale);
-
-	if (file)
+	if (file.open (QIODevice::ReadOnly))
 	{
-		file >> lesson;
+		QTextStream in (&file);
+		in >> lesson;
+		file.close ();
 	}
 	else return { lesson, CANNOT_OPEN_FILE };
 
 	return { lesson, SUCCESS };
 }
 
-Parser::IOStatus Parser::writeFile (Lesson & lesson, std::string filePath)
+Parser::IOStatus Parser::writeFile (Lesson & lesson, const QFileInfo& fileInfo)
 {
-	std::ofstream file (filePath, std::ios::out);
-
-	if (file)
+	QFile file (fileInfo.filePath ());
+	
+	if (file.open (QIODevice::WriteOnly))
 	{
-		file << lesson;
+		QTextStream out(&file);
+		out << lesson;
+		file.close ();
 	}
 	else return CANNOT_OPEN_FILE;
 
 	return SUCCESS;
 }
 
-std::list<std::string> Parser::listLessonsInFolder (std::string folderPath)
+QFileInfoList Parser::listLessonsInFolder (const QDir& dir)
 {
-	std::list<std::string> list;
-
-	for (directory_entry it : directory_iterator (folderPath))
-	{
-		if (it.path ().extension().string() == DEFAULT_LESSON_FILE_EXTENSION)
-		{
-			list.push_back (it.path().filename().string ());
-		}
-	}
-
-	return list;
+	return dir.entryInfoList ({ QString ("*") + QString (DEFAULT_LESSON_FILE_EXTENSION) });;
 }

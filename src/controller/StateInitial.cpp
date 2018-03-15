@@ -1,30 +1,30 @@
 #include "StateInitial.h"
 #include "StateTraining.h"
 
-void StateInitial::selectNewLessonFolder (Controller & controller, std::string folderPath) const
+void StateInitial::selectNewLessonFolder (Controller & controller, QDir dir) const
 {
-	controller.setFolderPath (folderPath);
-	std::list<std::string>& lessonList = controller.getParser ().listLessonsInFolder (folderPath);
-	controller.getViewer ()->displayLessonList (folderPath, lessonList);
+	controller.setFolderPath (dir);
+	QFileInfoList lessonList = controller.getParser ().listLessonsInFolder (dir);
+	controller.getViewer ()->displayLessonList (dir, lessonList);
 }
 
 void StateInitial::showLessons (Controller & controller) const
 {
-	std::list<std::string>& lessonList = controller.getParser ().listLessonsInFolder (controller.getFolderPath ());
+	QFileInfoList lessonList = controller.getParser ().listLessonsInFolder (controller.getFolderPath ());
 	controller.getViewer ()->displayLessonList (controller.getFolderPath (), lessonList);
 }
 
-void StateInitial::startTraining (Controller & controller, std::string lessonFileName) const
+void StateInitial::startTraining (Controller & controller, QFileInfo lessonFile) const
 {
-	auto[lesson, status] = controller.getParser ().parseFile (controller.getFolderPath () + '/' + lessonFileName);
+	auto[lesson, status] = controller.getParser ().parseFile (lessonFile);
 
 	if (status == Parser::IOStatus::CANNOT_OPEN_FILE)
 	{
-		controller.getViewer ()->showFileError (lessonFileName);
+		controller.getViewer ()->showFileError (lessonFile);
 	}
 	else
 	{
-		controller.getViewer ()->showTrainingStarted (lessonFileName);
+		controller.getViewer ()->showTrainingStarted (lessonFile);
 		controller.getStateTraining ()->createTrainingSession (controller, lesson);
 		controller.setCurrentState (controller.getStateTraining ());
 	}

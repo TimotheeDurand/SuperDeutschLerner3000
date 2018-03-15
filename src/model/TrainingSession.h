@@ -1,6 +1,8 @@
 #pragma once
 
 #include <list>
+#include <QList>
+#include <QPair>
 
 #include "Lesson.h"
 #include "Tuple.h"
@@ -10,13 +12,13 @@ class TrainingSession
 public:
 	TrainingSession (Lesson lesson);
 
-	std::string getNext ();
-	std::pair<Tuple, bool > answer (std::string);
+	QString getNext ();
+	QPair<Tuple, bool > answer (QString givenAnswer);
 	int getRemaining ();
 	int getCorrectAnswers ();
 	int getTotalAnswers ();
 	bool isOver ();
-	std::list<std::pair<Tuple, bool >> getAnswers () { return answeredTuples; }
+	QList<QPair<Tuple, bool >> getAnswers () { return answeredTuples; }
 	
 
 private:
@@ -24,8 +26,8 @@ private:
 
 	// if the associated bool is false, the user must answer the translation
 	// if the associated bool is true, the user must give the original word
-	std::pair<Tuple, bool> tupleAsked;
+	QPair<Tuple, bool> tupleAsked;
 
-	std::list<Tuple> unansweredTuples;
-	std::list<std::pair<Tuple, bool >> answeredTuples;
+	QList<Tuple> unansweredTuples;
+	QList<QPair<Tuple, bool >> answeredTuples;
 };

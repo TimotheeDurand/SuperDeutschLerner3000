@@ -1,7 +1,8 @@
 ﻿#pragma once
 
-#include <string>
-#include <regex>
+#include <QRegExp>
+#include <QString>
+#include <QTextStream>
 
 #define TUPLE_REGEX_STRING "[a-zäöüß\',!\\?\\.\\s]+\\s:\\s[a-zàâçéèêëîïôûùüÿæœ\',!\\?\\.\\s]+"
 
@@ -14,28 +15,28 @@ class Tuple
 {
 public:
 	Tuple () : m_translated (""), m_original ("") {}
-	Tuple (std::string originalLanguageWord, std::string translatedLanguageWord) :
+	Tuple (QString originalLanguageWord, QString translatedLanguageWord) :
 		m_original (originalLanguageWord),
 		m_translated (translatedLanguageWord) {}
 
 	//setters
-	void setOriginal (std::string originalLanguageWord) { m_original = originalLanguageWord; }
-	void setTranslated (std::string translatedLanguageWord) { m_translated = translatedLanguageWord; }
+	void setOriginal (QString originalLanguageWord) { m_original = originalLanguageWord; }
+	void setTranslated (QString translatedLanguageWord) { m_translated = translatedLanguageWord; }
 
 	//getters
-	std::string getTranslated () { return m_translated; }
-	std::string getOriginal () { return m_original; }
+	QString getTranslated () { return m_translated; }
+	QString getOriginal () { return m_original; }
 	bool isValid () { return m_valid; }
 
 	//operators used to serialize / deserialize the object
-	friend std::ostream& operator<<(std::ostream& stream, const Tuple& tuple);
-	friend std::istream& operator>>(std::istream& is, Tuple& tuple);
+	friend QTextStream& operator<<(QTextStream& stream, const Tuple& tuple);
+	friend QTextStream& operator>>(QTextStream& is, Tuple& tuple);
 
 protected:
 	//regular expression used to deserialized, to see if the given input matches a Tuple
 
-	std::string m_original;
-	std::string m_translated;
+	QString m_original;
+	QString m_translated;
 
 	bool m_valid = false;
 };

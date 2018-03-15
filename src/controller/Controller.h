@@ -1,7 +1,6 @@
 #pragma once
 
-#include <string>
-#include <filesystem>
+#include <QDir>
 
 #include "State.h"
 #include "src\parser\Parser.h"
@@ -25,8 +24,8 @@ public:
 	GenericViewer* getViewer () { return viewer; }
 	void setViewer (GenericViewer* viewer) { this->viewer = viewer; }
 
-	std::string getFolderPath () { return folderPath; }
-	void setFolderPath (std::string folderPath ) { this->folderPath = folderPath; }
+	QDir getFolderPath () { return currentDir; }
+	void setFolderPath (QDir dir) { this->currentDir = dir; }
 
 	void setCurrentState (State * state) { currentState = state; }
 	State* getCurrentState () { return currentState; }
@@ -36,11 +35,11 @@ public:
 
 	// functions available for the viewer :
 
-	void selectNewLessonFolder (std::string folderPath);
+	void selectNewLessonFolder (QDir dir);
 	void showLessons ();
 
-	void startTraining (std::string lessonFileName);
-	void answer (std::string givenAnswer);
+	void startTraining (QFileInfo lessonFileInfo);
+	void answer (QString givenAnswer);
 	void closeTraining ();
 
 	void createNewLesson ();
@@ -57,7 +56,7 @@ private:
 	StateEditing *stateEditing;
 	
 	Parser parser;
-	std::string folderPath = std::experimental::filesystem::current_path ().string();
+	QDir currentDir = QDir::currentPath ();
 
 	GenericViewer *viewer = NULL;
 };

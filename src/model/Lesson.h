@@ -3,9 +3,13 @@
 #include <vector>
 #include <exception>
 
+#include <QTextStream>
+#include <QVector>
+#include <QString>
+
 #include "Tuple.h"
 
-typedef std::vector<Tuple> DictionnaryType;
+typedef QVector<Tuple> DictionnaryType;
 
 /* Class Lesson:
 	
@@ -17,8 +21,8 @@ public:
 	Lesson ();
 	Lesson (DictionnaryType & dictionnary) : m_dictionnary(dictionnary) {}
 	DictionnaryType & getDictionnary () { return m_dictionnary; }
-	friend std::ostream& operator<< (std::ostream& stream, const Lesson& lesson);
-	friend std::istream& operator>>(std::istream& is, Lesson& lesson);
+	friend QTextStream& operator<< (QTextStream& stream, const Lesson& lesson);
+	friend QTextStream& operator>>(QTextStream& is, Lesson& lesson);
 
 protected:
 	DictionnaryType m_dictionnary;

@@ -1,6 +1,6 @@
 #include "CLIEventDispatcher.h"
-#include <vector>
-#include <sstream>
+#include <QVector>
+#include <QTextStream>
 
 using namespace std;
 
@@ -10,21 +10,21 @@ CLIEventDispatcher::CLIEventDispatcher (Controller * controller, GenericViewer *
 	m_cliviewer = dynamic_cast<CLIViewer*>(viewer);
 }
 
-bool CLIEventDispatcher::handleUserInput (std::string userInput)
+bool CLIEventDispatcher::handleUserInput (QString userInput)
 {
 	// Split user inputs as tokens
-	vector<string> argv;
+	QVector<QString> argv;
 	char delimiter = ' ';
-	size_t oldpos = 0;
-	size_t pos = 0;
+	int oldpos = 0;
+	int pos = 0;
 	do {
-		pos = userInput.find (delimiter, oldpos);
-		argv.push_back (userInput.substr (oldpos, pos));
+		pos = userInput.indexOf (delimiter, oldpos);
+		argv.push_back (userInput.mid (oldpos, pos));
 		oldpos = pos + 1;
-	} while (pos != std::string::npos);
+	} while (pos != -1);
 
 	// no arguments => ignore
-	size_t argc = argv.size ();
+	int argc = argv.size ();
 	if (argc == 0)
 	{
 		return true;

@@ -20,9 +20,9 @@ Controller::~Controller ()
 	delete stateEditing;
 }
 
-void Controller::selectNewLessonFolder (std::string folderPath)
+void Controller::selectNewLessonFolder (QDir dir)
 {
-	currentState->selectNewLessonFolder (*this, folderPath);
+	currentState->selectNewLessonFolder (*this, dir);
 }
 
 void Controller::showLessons ()
@@ -30,12 +30,12 @@ void Controller::showLessons ()
 	currentState->showLessons (*this);
 }
 
-void Controller::startTraining (std::string lessonFileName)
+void Controller::startTraining (QFileInfo lessonFileInfo)
 {
-	currentState->startTraining (*this, lessonFileName);
+	currentState->startTraining (*this, lessonFileInfo);
 }
 
-void Controller::answer (std::string givenAnswer)
+void Controller::answer (QString givenAnswer)
 {
 	currentState->answer (*this, givenAnswer);
 }
