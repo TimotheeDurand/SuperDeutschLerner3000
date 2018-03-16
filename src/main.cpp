@@ -1,17 +1,19 @@
-#include "view\CLI\CLIViewer.h"
-#include "view\CLI\CLIEventDispatcher.h"
+#include "view\UI\MainEventDispatcher.h"
+#include "view\UI\MainWindow.h"
 #include "controller\Controller.h"
-
-#include <filesystem>
+#include <QApplication>
 
 int main(int argc, char** argv)
 {
+	QApplication a (argc, argv);
+
 	Controller controller;
 	if (argc > 1) controller.setFolderPath (QString(argv[1]));
-	CLIViewer viewer;
+	MainWindow viewer;
 	controller.setViewer (&viewer);
-	CLIEventDispatcher dispatcher(&controller, &viewer);
+	MainEventDispatcher dispatcher(&controller, &viewer);
 	viewer.setEventDispatcher (&dispatcher);
 	viewer.launchUserInterface ();
-	return 0;
+	controller.showLessons ();
+	return a.exec();
 }

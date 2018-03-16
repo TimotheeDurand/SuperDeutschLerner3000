@@ -12,7 +12,7 @@ class TrainingSession
 public:
 	TrainingSession (Lesson lesson);
 
-	QString getNext ();
+	QPair<QString, bool> getNext ();
 	std::tuple<Tuple, bool, QString> answer (QString givenAnswer);
 	int getRemaining ();
 	int getCorrectAnswers ();

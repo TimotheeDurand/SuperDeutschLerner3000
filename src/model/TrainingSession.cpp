@@ -21,7 +21,7 @@ TrainingSession::TrainingSession (Lesson lesson) : m_lesson (lesson)
 	}
 }
 
-QString TrainingSession::getNext ()
+QPair<QString, bool> TrainingSession::getNext ()
 {
 	bool askTranslation = rand () % 2;
 
@@ -29,8 +29,8 @@ QString TrainingSession::getNext ()
 	unansweredTuples.pop_front ();
 
 	if (askTranslation)
-		return tupleAsked.first.getOriginal ();
-	return tupleAsked.first.getTranslated ();
+		return { tupleAsked.first.getOriginal (), askTranslation };
+	return { tupleAsked.first.getTranslated (), askTranslation };
 }
 
 std::tuple<Tuple, bool, QString> TrainingSession::answer (QString givenAnswer)

@@ -2,8 +2,6 @@
 #include "view\CLI\CLIEventDispatcher.h"
 #include "controller\Controller.h"
 
-#include <filesystem>
-
 int main(int argc, char** argv)
 {
 	Controller controller;

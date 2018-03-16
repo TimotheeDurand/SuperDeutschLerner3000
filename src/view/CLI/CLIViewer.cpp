@@ -142,7 +142,7 @@ void CLIViewer::giveAnswer (QString originalWord, QString translatedWord, bool s
 	cout << endl;
 }
 
-void CLIViewer::askWord (QString word)
+void CLIViewer::askWord (QString word, bool original)
 {
 	cout << "What's the meaning of : \"" << flush;
 	utf8Print (word);

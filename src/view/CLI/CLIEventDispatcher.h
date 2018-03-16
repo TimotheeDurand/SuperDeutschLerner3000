@@ -1,10 +1,7 @@
 ﻿#pragma once
 
-#include <list>
-#include <string>
 #include "src\view\GenericEventDispatcher.h"
 #include "CLIViewer.h"
-#include "src\controller\Controller.h"
 
 class CLIViewer;
 

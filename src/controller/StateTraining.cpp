@@ -5,7 +5,8 @@ void StateTraining::createTrainingSession (Controller &controller, Lesson &lesso
 	if (currentTrainingSession)
 		delete currentTrainingSession;
 	currentTrainingSession = new TrainingSession(lesson);
-	controller.getViewer ()->askWord (currentTrainingSession->getNext ());
+	auto[word, original] = currentTrainingSession->getNext ();
+	controller.getViewer ()->askWord (word, original);
 }
 
 void StateTraining::answer (Controller & controller, QString givenAnswer) const
@@ -15,7 +16,8 @@ void StateTraining::answer (Controller & controller, QString givenAnswer) const
 
 	if (!currentTrainingSession->isOver())
 	{
-		controller.getViewer ()->askWord (currentTrainingSession->getNext ());
+		auto[word, original] = currentTrainingSession->getNext ();
+		controller.getViewer ()->askWord (word, original);
 	}
 	else
 	{
