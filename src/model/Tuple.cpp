@@ -1,5 +1,4 @@
 ﻿#include "Tuple.h"
-#include <iostream>
 
 QTextStream& operator<<(QTextStream& os, const Tuple& tuple)
 {

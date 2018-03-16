@@ -10,7 +10,6 @@ CLIViewer::CLIViewer () : cout(stdout, QIODevice::WriteOnly), cin (stdin, QIODev
 
 void CLIViewer::launchUserInterface ()
 {
-	cout << "ê";
 	cout << "SuperDeutschLerner3000 started. For a command list type \"help\"" << endl;
 
 	do cout << endl << "SDL3k> " << flush; while (listenKeyBoardInput ());

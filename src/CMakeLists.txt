@@ -38,6 +38,13 @@ if (MSVC_VERSION)
         $<TARGET_FILE:Qt5::Core>
         $<TARGET_FILE_DIR:SuperDeutschLerner3000>)
 		
+	#copy Qt Dll
+	add_custom_command(
+    TARGET SuperDeutschLerner3000 POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        $<TARGET_FILE:Qt5::Widgets>
+        $<TARGET_FILE_DIR:SuperDeutschLerner3000>)
+		
 	#copy lesson files
 	add_custom_command(TARGET SuperDeutschLerner3000CLI POST_BUILD
 		COMMAND ${CMAKE_COMMAND} -E copy_if_different  
@@ -50,8 +57,16 @@ if (MSVC_VERSION)
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
         $<TARGET_FILE:Qt5::Core>
         $<TARGET_FILE_DIR:SuperDeutschLerner3000CLI>)
+		
+	#copy Qt Dll
+	add_custom_command(
+    TARGET SuperDeutschLerner3000CLI POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        $<TARGET_FILE:Qt5::Widgets>
+        $<TARGET_FILE_DIR:SuperDeutschLerner3000CLI>)
 
 	set_target_properties(SuperDeutschLerner3000 PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "${EXECUTABLE_OUTPUT_PATH}")
+	set_target_properties(SuperDeutschLerner3000CLI PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "${EXECUTABLE_OUTPUT_PATH}")
 endif()
 
 add_library (DeutschLernerLibrary ${SOURCE_FILES} ${HEADER_FILES} ${LIBS_SOURCES})
@@ -61,7 +76,8 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON) # Find includes in corresponding build directo
 set(CMAKE_AUTOMOC ON) # Instruct CMake to run moc automatically when needed.
 set(CMAKE_PREFIX_PATH "C:/Qt/5.10.1/msvc2017_64") # Change this to your own
 find_package(Qt5Core REQUIRED)
-target_link_libraries(DeutschLernerLibrary Qt5::Core)
+find_package(Qt5Widgets REQUIRED)
+target_link_libraries(DeutschLernerLibrary Qt5::Core Qt5::Widgets)
 
 target_link_libraries (SuperDeutschLerner3000 DeutschLernerLibrary)
 target_link_libraries (SuperDeutschLerner3000CLI DeutschLernerLibrary)
