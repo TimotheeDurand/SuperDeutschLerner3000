@@ -11,7 +11,7 @@ public:
 	virtual void showTrainingStarted (QFileInfo fileInfos) = 0;
 	virtual void askWord (QString word) = 0;
 	virtual void giveAnswer (QString originalWord, QString translatedWord, bool success) = 0;
-	virtual void showTrainingEnded (int correctWords, int totalWords) = 0;
+	virtual void showTrainingEnded (int correctAnswers, int totalAnswers, QList<std::tuple<QString, QString, bool, QString>> &answers) = 0;
 
 private:
 

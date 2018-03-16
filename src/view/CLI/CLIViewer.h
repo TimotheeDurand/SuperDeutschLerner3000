@@ -22,7 +22,7 @@ public:
 	void showFileMissing ();
 	virtual void showFileError (QFileInfo fileInfos) override;
 	virtual void showTrainingStarted (QFileInfo fileInfos) override;
-	virtual void showTrainingEnded (int correctAnswers, int totalAnswers) override;
+	virtual void showTrainingEnded (int correctAnswers, int totalAnswers, QList<std::tuple<QString, QString, bool, QString>> &answers) override;
 	virtual void giveAnswer (QString originalWord, QString translatedWord, bool success) override;
 	virtual void askWord (QString word) override;
 

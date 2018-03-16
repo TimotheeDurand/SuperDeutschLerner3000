@@ -33,7 +33,7 @@ QString TrainingSession::getNext ()
 	return tupleAsked.first.getTranslated ();
 }
 
-QPair<Tuple, bool > TrainingSession::answer (QString givenAnswer)
+std::tuple<Tuple, bool, QString> TrainingSession::answer (QString givenAnswer)
 {
 	QString stringAsked;
 
@@ -42,7 +42,7 @@ QPair<Tuple, bool > TrainingSession::answer (QString givenAnswer)
 	else
 		stringAsked = tupleAsked.first.getOriginal ();
 
-	answeredTuples.push_back ({ tupleAsked.first, stringAsked == givenAnswer });
+	answeredTuples.push_back ({ tupleAsked.first, stringAsked == givenAnswer, givenAnswer});
 
 	return answeredTuples.back();
 }
@@ -56,7 +56,7 @@ int TrainingSession::getCorrectAnswers ()
 {
 	int correctCount = 0;
 	for (auto it : answeredTuples)
-		correctCount += it.second;
+		correctCount += (bool)std::get<bool>(it);
 	return correctCount;
 }
 
@@ -68,4 +68,15 @@ int TrainingSession::getTotalAnswers ()
 bool TrainingSession::isOver ()
 {
 	return getRemaining() == 0;
+}
+
+QList<std::tuple<QString, QString, bool, QString>> TrainingSession::getAnswers ()
+{
+	QList<std::tuple<QString, QString, bool, QString>> res;
+	for (auto answer : answeredTuples)
+	{
+		auto[tuple, goodAnswer, givenAnswer] = answer;
+		res.push_back ({ tuple.getOriginal (), tuple.getTranslated (), goodAnswer, givenAnswer });
+	}
+	return res;
 }

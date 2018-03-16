@@ -33,7 +33,7 @@ void CLIViewer::showCommandList ()
 	cmdHelps.push_back ({ "pwd", "show the current working directory" });
 	cmdHelps.push_back ({ "cd [dir]", "change current working directory to [dir]" });
 	cmdHelps.push_back ({ "help (h)", "display command list" });
-	cmdHelps.push_back ({ "lessons (ls)", "show the current working directory" });
+	cmdHelps.push_back ({ "lessons (ls)", "show the lessons in the current directory" });
 	cmdHelps.push_back ({ "train (t) [file.les]", "start a training session on the [file.les]" });
 	cmdHelps.push_back ({ "exit", "exit SDL3k" });
 	
@@ -80,17 +80,52 @@ void CLIViewer::showTrainingStarted (QFileInfo fileInfo)
 	cout << "GOOD LUCK" << endl << endl;
 }
 
-void CLIViewer::showTrainingEnded (int correctAnswers, int totalAnswers)
+void CLIViewer::showTrainingEnded (
+	int correctAnswers,
+	int totalAnswers,
+	QList<std::tuple<QString, QString, bool, QString>>& answers)
 {
+	for (auto answer : answers)
+	{
+		auto[stro, strt, correct, given] = answer;
+		
+		cout.setFieldWidth (40);
+		if (correct)
+		{
+			cout << left << "correct" << flush;
+		}
+		else
+		{
+			cout << left << "INCORRECT" << flush;
+		}
+		cout.setFieldWidth (0);
+		utf8Print (stro);
+		cout << " : " << flush;
+		utf8Print (strt);
+		cout << endl;
+
+		if (!correct)
+		{
+			cout << "You said: " << flush;
+			utf8Print (given);
+			cout << endl;
+		}
+	}
+	cout << endl;
+
 	cout << "TRAINING SESSION OVER" << endl;
-	cout << "Correct answers: ";
+	cout << "Correct answers:";
 	cout.setFieldWidth (4);
-	cout << correctAnswers << endl;
-	cout << "Errors: ";
-	cout.setFieldWidth (9+4); 
-	cout << (totalAnswers - correctAnswers) << endl;
+	cout << correctAnswers;
 	cout.setFieldWidth (0);
+	cout << endl;
+	cout << "Errors: ";
+	cout.setFieldWidth (9 + 4);
+	cout << (totalAnswers - correctAnswers);
+	cout.setFieldWidth (0);
+	cout << endl;
 }
+
 
 void CLIViewer::giveAnswer (QString originalWord, QString translatedWord, bool success)
 {

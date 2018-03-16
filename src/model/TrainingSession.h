@@ -13,12 +13,12 @@ public:
 	TrainingSession (Lesson lesson);
 
 	QString getNext ();
-	QPair<Tuple, bool > answer (QString givenAnswer);
+	std::tuple<Tuple, bool, QString> answer (QString givenAnswer);
 	int getRemaining ();
 	int getCorrectAnswers ();
 	int getTotalAnswers ();
 	bool isOver ();
-	QList<QPair<Tuple, bool >> getAnswers () { return answeredTuples; }
+	QList<std::tuple<QString, QString, bool, QString>> getAnswers ();
 	
 
 private:
@@ -29,5 +29,5 @@ private:
 	QPair<Tuple, bool> tupleAsked;
 
 	QList<Tuple> unansweredTuples;
-	QList<QPair<Tuple, bool >> answeredTuples;
+	QList<std::tuple<Tuple, bool, QString>> answeredTuples;
 };

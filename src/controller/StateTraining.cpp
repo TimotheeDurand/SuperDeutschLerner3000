@@ -10,7 +10,7 @@ void StateTraining::createTrainingSession (Controller &controller, Lesson &lesso
 
 void StateTraining::answer (Controller & controller, QString givenAnswer) const
 {
-	auto [tuple, wellAnswered] = currentTrainingSession->answer (givenAnswer);
+	auto [tuple, wellAnswered, ga] = currentTrainingSession->answer (givenAnswer);
 	controller.getViewer ()->giveAnswer (tuple.getOriginal (), tuple.getTranslated(), wellAnswered);
 
 	if (!currentTrainingSession->isOver())
@@ -21,7 +21,8 @@ void StateTraining::answer (Controller & controller, QString givenAnswer) const
 	{
 		controller.getViewer ()->showTrainingEnded (
 			currentTrainingSession->getCorrectAnswers (),
-			currentTrainingSession->getTotalAnswers ());
+			currentTrainingSession->getTotalAnswers (),
+			currentTrainingSession->getAnswers());
 		controller.setCurrentState ((State*)controller.getStateInitial ());
 	}
 }
@@ -30,6 +31,7 @@ void StateTraining::closeTraining (Controller & controller) const
 {
 	controller.getViewer ()->showTrainingEnded (
 		currentTrainingSession->getCorrectAnswers (),
-		currentTrainingSession->getTotalAnswers ());
+		currentTrainingSession->getTotalAnswers (),
+		currentTrainingSession->getAnswers());
 	controller.setCurrentState ((State*)controller.getStateInitial ());
 }
