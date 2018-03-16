@@ -1,11 +1,16 @@
 #include "CLIViewer.h"
 
+#ifdef Q_OS_WIN32
+#include <windows.h>
+#endif
+
 CLIViewer::CLIViewer () : cout(stdout, QIODevice::WriteOnly), cin (stdin, QIODevice::ReadOnly)
 {
 }
 
 void CLIViewer::launchUserInterface ()
 {
+	cout << "ê";
 	cout << "SuperDeutschLerner3000 started. For a command list type \"help\"" << endl;
 
 	do cout << endl << "SDL3k> " << flush; while (listenKeyBoardInput ());
@@ -84,26 +89,69 @@ void CLIViewer::showTrainingEnded (int correctAnswers, int totalAnswers)
 	cout << "Errors: ";
 	cout.setFieldWidth (9+4); 
 	cout << (totalAnswers - correctAnswers) << endl;
+	cout.setFieldWidth (0);
 }
 
 void CLIViewer::giveAnswer (QString originalWord, QString translatedWord, bool success)
 {
+	utf8Print (originalWord);
+	cout << " : " << flush;
+	utf8Print (translatedWord);
 	if (success)
-		cout << originalWord << " : " << translatedWord << " CORRECT" << endl;
+	{
+		cout << " CORRECT" << endl;
+	}
 	else
-		cout << originalWord << " : " << translatedWord << " INCORRECT" << endl;
+	{
+		cout << " INCORRECT" << endl;
+	}
 	cout << endl;
 }
 
 void CLIViewer::askWord (QString word)
 {
-	cout << "What's the meaning of : \"" << word << '\"' << endl;
+	cout << "What's the meaning of : \"" << flush;
+	utf8Print (word);
+	cout << '\"' << endl;
 }
 
 bool CLIViewer::listenKeyBoardInput ()
 {
 	QString userInput;
-	userInput = cin.readLine ();
+	userInput = readLine ();
 	cout << endl;
 	return eventDispatcher->handleUserInput (userInput);
 }
+
+void CLIViewer::utf8Print (QString string)
+{
+#ifdef Q_OS_WIN32
+	WriteConsoleW (GetStdHandle (STD_OUTPUT_HANDLE),
+		string.utf16 (), string.size (), NULL, NULL);
+#else
+	cout << string;
+#endif
+}
+
+QString CLIViewer::readLine ()
+{
+#ifdef Q_OS_WIN32
+	const int bufsize = 512;
+	wchar_t buf[bufsize];
+	DWORD read;
+	QString res;
+	do {
+		ReadConsoleW (GetStdHandle (STD_INPUT_HANDLE),
+			buf, bufsize, &read, NULL);
+		res += QString::fromWCharArray (buf, read);
+	} while (read > 0 && res[res.length () - 1] != '\n');
+	// could just do res.truncate(res.length() - 2), but better be safe
+	while (res.length () > 0
+		&& (res[res.length () - 1] == '\r' || res[res.length () - 1] == '\n'))
+		res.truncate (res.length () - 1);
+	return res;
+#else
+	return cin.readLine ();
+#endif
+}
+

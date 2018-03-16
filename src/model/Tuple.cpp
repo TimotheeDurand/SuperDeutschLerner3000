@@ -9,10 +9,11 @@ QTextStream& operator<<(QTextStream& os, const Tuple& tuple)
 
 QTextStream& operator>>(QTextStream& is, Tuple& tuple)
 {
-	static const QRegExp fullTupleRegex (TUPLE_REGEX_STRING, Qt::CaseSensitivity::CaseInsensitive);
+	static const QRegExp fullTupleRegex (QString::fromLocal8Bit (TUPLE_REGEX_STRING), Qt::CaseSensitivity::CaseInsensitive);
 
 	bool failed = true;
 	QString line = is.readLine();
+
 	tuple.m_valid = fullTupleRegex.exactMatch (line);
 
 	if (tuple.m_valid)

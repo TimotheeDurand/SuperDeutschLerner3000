@@ -28,7 +28,8 @@ public:
 
 private:
 	bool listenKeyBoardInput ();
-
+	void utf8Print (QString string);
+	QString readLine ();
 	CLIEventDispatcher* eventDispatcher;
 	QTextStream cout; 
 	QTextStream cin;

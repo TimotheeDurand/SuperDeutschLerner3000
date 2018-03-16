@@ -1,12 +1,5 @@
 #include "Parser.h"
 
-#include <fstream>
-#include <filesystem>
-
-// filesystem is not implemented as default in VS2017 as of version 15.5, this will change later
-// to std::filesystem.
-using namespace std::experimental::filesystem;
-
 std::tuple<Lesson, Parser::IOStatus> Parser::parseFile (const QFileInfo& fileInfo)
 {
 	QFile file (fileInfo.filePath ());
@@ -15,6 +8,7 @@ std::tuple<Lesson, Parser::IOStatus> Parser::parseFile (const QFileInfo& fileInf
 	if (file.open (QIODevice::ReadOnly))
 	{
 		QTextStream in (&file);
+		in.setCodec ("UTF-8");
 		in >> lesson;
 		file.close ();
 	}
