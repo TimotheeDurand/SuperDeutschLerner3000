@@ -6,6 +6,7 @@ list(REMOVE_ITEM SOURCE_FILES ${MAIN})
 
 file(GLOB_RECURSE EXAMPLES_LESSONS "${PROJECT_SOURCE_DIR}/examples/*.les")
 
+add_executable (SuperDeutschLerner3000CLI mainCLI.cpp)
 add_executable (SuperDeutschLerner3000 main.cpp)
 
 # Needed for having the good directory tree in the Visual studio project
@@ -35,8 +36,20 @@ if (MSVC_VERSION)
     TARGET SuperDeutschLerner3000 POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
         $<TARGET_FILE:Qt5::Core>
-        $<TARGET_FILE_DIR:SuperDeutschLerner3000>
-)
+        $<TARGET_FILE_DIR:SuperDeutschLerner3000>)
+		
+	#copy lesson files
+	add_custom_command(TARGET SuperDeutschLerner3000CLI POST_BUILD
+		COMMAND ${CMAKE_COMMAND} -E copy_if_different  
+			${EXAMPLES_LESSONS}
+			${EXECUTABLE_OUTPUT_PATH})    
+
+	#copy Qt Dll
+	add_custom_command(
+    TARGET SuperDeutschLerner3000CLI POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        $<TARGET_FILE:Qt5::Core>
+        $<TARGET_FILE_DIR:SuperDeutschLerner3000CLI>)
 
 	set_target_properties(SuperDeutschLerner3000 PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "${EXECUTABLE_OUTPUT_PATH}")
 endif()
@@ -51,3 +64,4 @@ find_package(Qt5Core REQUIRED)
 target_link_libraries(DeutschLernerLibrary Qt5::Core)
 
 target_link_libraries (SuperDeutschLerner3000 DeutschLernerLibrary)
+target_link_libraries (SuperDeutschLerner3000CLI DeutschLernerLibrary)

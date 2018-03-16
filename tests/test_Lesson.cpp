@@ -5,15 +5,15 @@
 unsigned int parseLessonTest () 
 {
 	Lesson lesson;
-	QString inputString = QString::fromUtf8("das Kleid : le vêtement\ndie Katze :fail le chat\nlernen : apprendre");
+	QString inputString = QString::fromLocal8Bit("das Kleid : le vêtement\ndie Katze :fail le chat\nlernen : apprendre");
 	QTextStream ss(&inputString);
 	ss >> lesson;
 	Tuple t = lesson.getDictionnary ().at (0);
 	Tuple t3 = lesson.getDictionnary ().at (1);
-	if (t.getOriginal () == QString::fromUtf8("das Kleid")
-		&& t.getTranslated () == QString::fromUtf8("le vêtement")
-		&& t3.getOriginal () == QString::fromUtf8("lernen")
-		&& t3.getTranslated () == QString::fromUtf8("apprendre"))
+	if (t.getOriginal () == QString::fromLocal8Bit("das Kleid")
+		&& t.getTranslated () == QString::fromLocal8Bit("le vêtement")
+		&& t3.getOriginal () == QString::fromLocal8Bit("lernen")
+		&& t3.getTranslated () == QString::fromLocal8Bit("apprendre"))
 		return 0;
 	return 1;
 }
@@ -21,12 +21,12 @@ unsigned int parseLessonTest ()
 unsigned int printLessonTest () 
 {
 	Tuple tuple;
-	tuple.setOriginal (QString::fromUtf8("das Kleid"));
-	tuple.setTranslated (QString::fromUtf8("le vêtement"));
+	tuple.setOriginal (QString::fromLocal8Bit("das Kleid"));
+	tuple.setTranslated (QString::fromLocal8Bit("le vêtement"));
 
 	Tuple tuple2;
-	tuple2.setOriginal (QString::fromUtf8("lernen"));
-	tuple2.setTranslated (QString::fromUtf8("apprendre"));
+	tuple2.setOriginal (QString::fromLocal8Bit("lernen"));
+	tuple2.setTranslated (QString::fromLocal8Bit("apprendre"));
 
 	DictionnaryType dict;
 	dict.push_back (tuple);
@@ -35,8 +35,8 @@ unsigned int printLessonTest ()
 	Lesson lesson (dict);
 	QString input;
 	QTextStream ss (&input);
-	ss << QString::fromUtf8("das Kleid : le vêtement") << endl;
-	ss << QString::fromUtf8("lernen : apprendre") << endl;
+	ss << QString::fromLocal8Bit("das Kleid : le vêtement") << endl;
+	ss << QString::fromLocal8Bit("lernen : apprendre") << endl;
 
 	QString input2;
 	QTextStream ss2(&input2);
