@@ -20,7 +20,7 @@ class MainWindow : public QWidget, public GenericViewer
 
 public:
 	MainWindow ();
-	void setEventDispatcher (MainEventDispatcher* dispatcher) { eventDispatcher = dispatcher; }
+	void setEventDispatcher (MainEventDispatcher* dispatcher);
 	virtual void launchUserInterface () override;
 	virtual void displayLessonList (QDir folder, QFileInfoList& lessonList) override;
 	virtual void showFileError (QFileInfo fileInfos) override;
@@ -29,6 +29,8 @@ public:
 	virtual void giveAnswer (QString originalWord, QString translatedWord, bool success) override;
 	virtual void showTrainingEnded (int correctAnswers, int totalAnswers, QList<std::tuple<QString, QString, bool, QString>> &answers) override;
 
+	QStandardItemModel* getLessonModel () { return m_lessonListModel; }
+
 private:
 	QListView *m_lessonsListView;
 	QSplitter *m_mainSplitter;
@@ -36,7 +38,7 @@ private:
 	QStandardItemModel *m_lessonListModel;
 	QStandardItemModel *m_wordListModel;
 
-	MainEventDispatcher *eventDispatcher;
+	MainEventDispatcher *m_eventDispatcher;
 
 	QModelIndex *lastAsked = NULL;
 

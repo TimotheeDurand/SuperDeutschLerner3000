@@ -61,6 +61,9 @@ if (MSVC_VERSION)
 	set_target_properties(SuperDeutschLerner3000CLI PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "${EXECUTABLE_OUTPUT_PATH}")
 endif()
 
+set(CMAKE_INCLUDE_CURRENT_DIR ON) # Find includes in corresponding build directories
+set(CMAKE_AUTOMOC ON) # Instruct CMake to run moc automatically when needed.
+
 find_package(Qt5Core REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 target_link_libraries(DeutschLernerLibrary Qt5::Core Qt5::Widgets Qt5::Gui)

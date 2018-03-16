@@ -22,6 +22,12 @@ MainWindow::MainWindow ()
 	m_wordsTable->setModel (m_wordListModel);
 }
 
+void MainWindow::setEventDispatcher (MainEventDispatcher * dispatcher)
+{
+	m_eventDispatcher = dispatcher;
+	QObject::connect (m_lessonsListView, &QListView::doubleClicked, m_eventDispatcher, &MainEventDispatcher::onLessonDoubleClicked);
+}
+
 void MainWindow::launchUserInterface ()
 {
 	this->show ();
