@@ -1,11 +1,27 @@
 ﻿#include "MainWindow.h"
 
 #include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QHeaderView>
 #include <QMessageBox>
+#include <QPixmap>
+#include <QFileDialog>
 
 MainWindow::MainWindow ()
 {
-	QVBoxLayout *layout = new QVBoxLayout (this);
+	this->resize (1000, 500);
+
+	QHBoxLayout *layout = new QHBoxLayout (this);
+
+	QVBoxLayout *leftRibbonLayout = new QVBoxLayout ();
+	layout->addLayout (leftRibbonLayout);
+	leftRibbonLayout->setAlignment (Qt::AlignTop);
+
+	m_changeFolderButton = new QPushButton (this);
+	QPixmap pixmap (":/icons/folder.svg");
+	m_changeFolderButton->setIcon (pixmap);
+	leftRibbonLayout->addWidget (m_changeFolderButton);
+
 	m_mainSplitter = new QSplitter (Qt::Horizontal, this);
 	layout->addWidget (m_mainSplitter);
 
@@ -17,15 +33,24 @@ MainWindow::MainWindow ()
 	m_wordsTable = new QTableView (m_mainSplitter);
 
 	m_wordListModel = new QStandardItemModel (this);
-	m_wordListModel->setHeaderData (OR_COL, Qt::Vertical, "German");
-	m_wordListModel->setHeaderData (TR_COL, Qt::Vertical, "French");
 	m_wordsTable->setModel (m_wordListModel);
+	QStandardItem *orHeaderItem = new QStandardItem ("German");
+	QStandardItem *trHeaderItem = new QStandardItem ("French");
+	m_wordListModel->setHorizontalHeaderItem (OR_COL, orHeaderItem);
+	m_wordListModel->setHorizontalHeaderItem (TR_COL, trHeaderItem);
+	m_wordsTable->horizontalHeader ()->setSectionResizeMode (QHeaderView::Stretch);
+	m_wordsTable->verticalHeader ()->hide ();
+
+	m_mainSplitter->setStretchFactor (0, 0);
+	m_mainSplitter->setStretchFactor (1, 1);
 }
 
 void MainWindow::setEventDispatcher (MainEventDispatcher * dispatcher)
 {
 	m_eventDispatcher = dispatcher;
 	QObject::connect (m_lessonsListView, &QListView::doubleClicked, m_eventDispatcher, &MainEventDispatcher::onLessonDoubleClicked);
+	QObject::connect (m_wordListModel, &QStandardItemModel::itemChanged, m_eventDispatcher, &MainEventDispatcher::onWordTableItemChanged);
+	QObject::connect (m_changeFolderButton, &QPushButton::clicked, m_eventDispatcher, &MainEventDispatcher::onChangeFolderButtonClicked);
 }
 
 void MainWindow::launchUserInterface ()
@@ -67,8 +92,11 @@ void MainWindow::askWord (QString word, bool original)
 	else
 		m_wordListModel->appendRow ({ itemEmpty, item });
 
-	lastAsked = new QModelIndex(m_wordListModel->indexFromItem (item));
-	m_wordsTable->selectionModel ()->select (*lastAsked, QItemSelectionModel::ClearAndSelect);
+	m_wordsTable->setFocus ();
+
+	lastAsked = new QModelIndex(m_wordListModel->indexFromItem (itemEmpty));
+	m_wordsTable->setCurrentIndex (*lastAsked);
+	m_wordsTable->edit (*lastAsked);
 }
 
 void MainWindow::giveAnswer (QString originalWord, QString translatedWord, bool success)
@@ -78,7 +106,12 @@ void MainWindow::giveAnswer (QString originalWord, QString translatedWord, bool 
 		QStandardItem *originalWordItem = m_wordListModel->item (lastAsked->row (), OR_COL);
 		QStandardItem *translatedWordItem = m_wordListModel->item (lastAsked->row (), TR_COL);
 
-		if (lastAsked->column () == OR_COL)
+		bool askedItemWasOriginalText = lastAsked->column () == OR_COL;
+
+		delete lastAsked;
+		lastAsked = NULL;
+
+		if (askedItemWasOriginalText)
 		{ // original
 			originalWordItem->setData (originalWord);
 			// maybe color it red or green for success / failure
@@ -94,4 +127,16 @@ void MainWindow::giveAnswer (QString originalWord, QString translatedWord, bool 
 void MainWindow::showTrainingEnded (int correctAnswers, int totalAnswers, QList<std::tuple<QString, QString, bool, QString>>& answers)
 {
 	// todo : do something ? maybe show stats ?
+}
+
+QDir MainWindow::openFileDialog (QDir dir)
+{
+	QFileDialog fileDialog (this);
+	fileDialog.setDirectory (dir);
+	fileDialog.setFileMode (QFileDialog::DirectoryOnly);
+	//fileDialog.setOption (QFileDialog::DontUseNativeDialog);
+	fileDialog.setOption (QFileDialog::ShowDirsOnly, false);
+	fileDialog.exec ();
+	
+	return fileDialog.directory ();
 }

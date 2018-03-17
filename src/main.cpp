@@ -6,6 +6,7 @@
 int main(int argc, char** argv)
 {
 	QApplication a (argc, argv);
+	Q_INIT_RESOURCE (resources);
 
 	Controller controller;
 	if (argc > 1) controller.setFolderPath (QString(argv[1]));

@@ -4,6 +4,7 @@
 #include <QListView>
 #include <QSplitter>
 #include <QTableView>
+#include <QPushButton>
 #include <QStandardItemModel>
 
 #include "src\view\GenericViewer.h"
@@ -29,7 +30,11 @@ public:
 	virtual void giveAnswer (QString originalWord, QString translatedWord, bool success) override;
 	virtual void showTrainingEnded (int correctAnswers, int totalAnswers, QList<std::tuple<QString, QString, bool, QString>> &answers) override;
 
+	QDir openFileDialog (QDir dir);
+
 	QStandardItemModel* getLessonModel () { return m_lessonListModel; }
+
+	QModelIndex* getLastAskedIndex () { return lastAsked; }
 
 private:
 	QListView *m_lessonsListView;
@@ -37,6 +42,8 @@ private:
 	QTableView *m_wordsTable;
 	QStandardItemModel *m_lessonListModel;
 	QStandardItemModel *m_wordListModel;
+
+	QPushButton *m_changeFolderButton;
 
 	MainEventDispatcher *m_eventDispatcher;
 

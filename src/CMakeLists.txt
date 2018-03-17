@@ -3,6 +3,7 @@ file(GLOB_RECURSE HEADER_FILES "*.h" "*.hpp")
 file(GLOB_RECURSE LIBS_SOURCES "../libs/*.hpp")
 file(GLOB_RECURSE MAIN "main.cpp")
 file(GLOB_RECURSE MAINCLI "mainCLI.cpp")
+file(GLOB_RECURSE RESOURCES "${CMAKE_SOURCE_DIR}/resources/*.qrc")
 list(REMOVE_ITEM SOURCE_FILES ${MAIN})
 list(REMOVE_ITEM SOURCE_FILES ${MAINCLI})
 
@@ -11,7 +12,7 @@ file(GLOB_RECURSE EXAMPLES_LESSONS "${PROJECT_SOURCE_DIR}/examples/*.les")
 add_executable (SuperDeutschLerner3000CLI mainCLI.cpp)
 add_executable (SuperDeutschLerner3000 main.cpp)
 
-add_library (DeutschLernerLibrary ${SOURCE_FILES} ${HEADER_FILES} ${LIBS_SOURCES})
+add_library (DeutschLernerLibrary ${SOURCE_FILES} ${HEADER_FILES} ${LIBS_SOURCES} ${RESOURCES})
 target_link_libraries (SuperDeutschLerner3000 DeutschLernerLibrary)
 target_link_libraries (SuperDeutschLerner3000CLI DeutschLernerLibrary)
 
@@ -41,7 +42,7 @@ if (MSVC_VERSION)
 	add_custom_command(
     TARGET SuperDeutschLerner3000 POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        $<TARGET_FILE:Qt5::Core> $<TARGET_FILE:Qt5::Widgets> $<TARGET_FILE:Qt5::Gui>
+        $<TARGET_FILE:Qt5::Core> $<TARGET_FILE:Qt5::Widgets> $<TARGET_FILE:Qt5::Gui> $<TARGET_FILE:Qt5::Svg>
         $<TARGET_FILE_DIR:SuperDeutschLerner3000>)
 		
 	#copy lesson files
@@ -63,8 +64,11 @@ endif()
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON) # Find includes in corresponding build directories
 set(CMAKE_AUTOMOC ON) # Instruct CMake to run moc automatically when needed.
+set(CMAKE_AUTORCC ON)
 
 find_package(Qt5Core REQUIRED)
 find_package(Qt5Widgets REQUIRED)
-target_link_libraries(DeutschLernerLibrary Qt5::Core Qt5::Widgets Qt5::Gui)
+find_package(Qt5Gui REQUIRED)
+find_package(Qt5Svg REQUIRED)
+target_link_libraries(DeutschLernerLibrary Qt5::Core Qt5::Widgets Qt5::Gui Qt5::Svg)
 

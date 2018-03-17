@@ -15,3 +15,20 @@ void MainEventDispatcher::onLessonDoubleClicked (const QModelIndex &index)
 	if (!fileName.isEmpty ())
 		m_controller->startTraining (fileName);
 }
+
+void MainEventDispatcher::onWordTableItemChanged (QStandardItem * item)
+{
+	if (m_mainWindow->getLastAskedIndex ())
+	{
+		m_controller->answer (item->text ());
+	}
+}
+
+void MainEventDispatcher::onChangeFolderButtonClicked ()
+{
+	QDir newDir = m_mainWindow->openFileDialog (m_controller->getFolderPath ());
+	if (!newDir.isEmpty ())
+	{
+		m_controller->selectNewLessonFolder (newDir);
+	}
+}

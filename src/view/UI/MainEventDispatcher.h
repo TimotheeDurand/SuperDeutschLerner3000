@@ -15,6 +15,8 @@ public:
 
 public slots:
 	void onLessonDoubleClicked (const QModelIndex &index);
+	void onWordTableItemChanged (QStandardItem* item);
+	void onChangeFolderButtonClicked ();
 
 private:
 	MainWindow * m_mainWindow;

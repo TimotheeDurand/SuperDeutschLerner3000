@@ -5,6 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON) # Find includes in corresponding build directories
 set(CMAKE_AUTOMOC ON) # Instruct CMake to run moc automatically when needed.
+set(CMAKE_AUTORCC ON)
 set(CMAKE_PREFIX_PATH "C:/Qt/5.10.1/msvc2017_64") # Change this to your own
 
 if (MSVC_VERSION GREATER_EQUAL "1900")
