@@ -8,6 +8,7 @@ QWidget#MainWindow{
 QWidget{
 	background-color: #2d2d30;
 	color: #f1f1f1;
+	font: 14px;
 }
 
 QSplitter::handle{
@@ -55,7 +56,7 @@ QTableView{
 	background-color: #1e1e1e;
 	border: 1px solid #3f3f46;
 	color: #f1f1f1;
-	gridline-color: #686868;
+	gridline-color: #3f3f46;
 	outline: none;
 }
 

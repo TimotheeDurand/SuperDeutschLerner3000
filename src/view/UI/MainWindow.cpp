@@ -8,6 +8,8 @@
 #include <QFileDialog>
 #include <QTextStream>
 
+#include <QDebug>
+
 MainWindow::MainWindow ()
 {
 	// reading CSS from file
@@ -83,9 +85,10 @@ void MainWindow::launchUserInterface ()
 
 void MainWindow::displayLessonList (QDir folder, QFileInfoList & lessonList)
 {
-	m_folderNameLabel->setFullText (folder.absolutePath ());
-
 	m_lessonListModel->clear ();
+	m_wordListModel->removeRows (0, m_wordListModel->rowCount ());
+
+	m_folderNameLabel->setFullText (folder.absolutePath ());
 	
 	for (auto lesson : lessonList)
 	{
@@ -102,7 +105,7 @@ void MainWindow::showFileError (QFileInfo fileInfos)
 
 void MainWindow::showTrainingStarted (QFileInfo fileInfos)
 {
-	// todo : do something ? maybe some notification ?
+	m_wordListModel->removeRows (0, m_wordListModel->rowCount ());
 }
 
 void MainWindow::askWord (QString word, bool original)
@@ -128,9 +131,7 @@ void MainWindow::giveAnswer (QString originalWord, QString translatedWord, bool 
 {
 	if (lastAsked)
 	{
-		QStandardItem *originalWordItem = m_wordListModel->item (lastAsked->row (), OR_COL);
-		QStandardItem *translatedWordItem = m_wordListModel->item (lastAsked->row (), TR_COL);
-
+		QStandardItem *askedItem = m_wordListModel->item (lastAsked->row (), lastAsked->column ());
 		bool askedItemWasOriginalText = lastAsked->column () == OR_COL;
 
 		delete lastAsked;
@@ -138,20 +139,27 @@ void MainWindow::giveAnswer (QString originalWord, QString translatedWord, bool 
 
 		if (askedItemWasOriginalText)
 		{ // original
-			originalWordItem->setData (originalWord);
-			// maybe color it red or green for success / failure
+			askedItem->setText (originalWord);
 		}
 		else
 		{ // translated
-			translatedWordItem->setData (translatedWord);
-			// maybe color it red or green for success / failure
+			askedItem->setText (translatedWord);
+		}
+		if (success)
+		{
+			askedItem->setForeground (Qt::GlobalColor::green);
+		}
+		else
+		{
+			askedItem->setForeground (Qt::GlobalColor::red);
 		}
 	}
 }
 
 void MainWindow::showTrainingEnded (int correctAnswers, int totalAnswers, QList<std::tuple<QString, QString, bool, QString>>& answers)
 {
-	// todo : do something ? maybe show stats ?
+	setFocus ();
+	m_wordsTable->clearSelection ();
 }
 
 QDir MainWindow::openFileDialog (QDir dir)
@@ -159,7 +167,6 @@ QDir MainWindow::openFileDialog (QDir dir)
 	QFileDialog fileDialog (this);
 	fileDialog.setDirectory (dir);
 	fileDialog.setFileMode (QFileDialog::DirectoryOnly);
-	//fileDialog.setOption (QFileDialog::DontUseNativeDialog);
 	fileDialog.setOption (QFileDialog::ShowDirsOnly, false);
 	fileDialog.exec ();
 	
