@@ -1,0 +1,88 @@
+QWidget#MainWindow{
+	background-color: #2d2d30;
+	padding: 0px;
+	margin: 0px;
+}
+
+/*used for QTableView delegate*/
+QWidget{
+	background-color: #2d2d30;
+	color: #f1f1f1;
+}
+
+QSplitter::handle{
+	background: #2d2d30;
+}
+
+QListView{
+	background-color: #252526;
+	color: #f1f1f1;
+	border: 1px solid #3f3f46;
+	outline: none;
+}
+
+QListView::item{
+	padding: 3px;
+}
+
+QListView::item:selected:active {
+    background-color: #007acc;
+	color: #f1f1f1;
+}
+
+QListView::item:selected:!active{
+    background-color: #3f3f46;
+	color: #f1f1f1;
+}
+
+QHeaderView::section{
+	background-color: #333337;
+	color: #f1f1f1;
+	border: none;
+	font: 14px;
+	padding: 8px;
+	border: 1px solid #3f3f46;
+	border-width: 0px 1px 1px 0px
+}
+
+QHeaderView::section:checked
+{
+    background-color: #165f93;
+	font: bold 14px;
+}
+
+QTableView{
+	background-color: #1e1e1e;
+	border: 1px solid #3f3f46;
+	color: #f1f1f1;
+	gridline-color: #686868;
+	outline: none;
+}
+
+QTableView::item:selected:active {
+	outline: none;
+	border: 0px;
+	background-color: #007acc;
+}
+
+QTableView::item:selected:!active {
+	outline: none;
+	border: 0px;
+	background-color: #3f3f46;
+	color: #f1f1f1;
+}
+
+QPushButton{
+	width: 30px;
+	height: 30px;
+	background-color: transparent;
+	margin: 10px;	
+}
+
+QPushButton#ChangeFolder{
+	border-image: url(:/icons/folder.svg);
+}
+
+QPushButton#ChangeFolder:hover{
+	border-image: url(:/icons/folder-hover.svg)
+}

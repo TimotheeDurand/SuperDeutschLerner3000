@@ -2,5 +2,7 @@
 <qresource>
 	<file>icons/folder.svg</file>
 	<file>icons/cocarde.png</file>
+	<file>icons/folder-hover.svg</file>
+	<file>styles/MainWindow.css</file>
 </qresource>
 </RCC>
