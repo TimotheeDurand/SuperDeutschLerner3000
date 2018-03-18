@@ -6,9 +6,11 @@
 #include <QTableView>
 #include <QPushButton>
 #include <QStandardItemModel>
+#include <QLabel>
 
 #include "src\view\GenericViewer.h"
 #include "MainEventDispatcher.h"
+#include "CompressibleLabel.h"
 
 #define OR_COL 0
 #define TR_COL 1
@@ -42,6 +44,8 @@ private:
 	QTableView *m_wordsTable;
 	QStandardItemModel *m_lessonListModel;
 	QStandardItemModel *m_wordListModel;
+
+	CompressibleLabel *m_folderNameLabel;
 
 	QPushButton *m_changeFolderButton;
 

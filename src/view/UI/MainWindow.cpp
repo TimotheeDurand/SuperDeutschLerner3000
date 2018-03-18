@@ -6,26 +6,49 @@
 #include <QMessageBox>
 #include <QPixmap>
 #include <QFileDialog>
+#include <QTextStream>
 
 MainWindow::MainWindow ()
 {
+	// reading CSS from file
+	QFile file (":/styles/MainWindow.css");
+	if (file.open (QIODevice::ReadOnly | QIODevice::Text))
+	{
+		QTextStream stream (&file);
+		setStyleSheet (stream.readAll ());
+		file.close ();
+	}
 	this->resize (1000, 500);
+	this->setObjectName ("MainWindow");
 
 	QHBoxLayout *layout = new QHBoxLayout (this);
+	layout->setContentsMargins (0, 0, 0, 0);
+	layout->setSpacing (0);
 
 	QVBoxLayout *leftRibbonLayout = new QVBoxLayout ();
 	layout->addLayout (leftRibbonLayout);
 	leftRibbonLayout->setAlignment (Qt::AlignTop);
+	layout->setContentsMargins (0, 0, 0, 0);
 
 	m_changeFolderButton = new QPushButton (this);
-	QPixmap pixmap (":/icons/folder.svg");
-	m_changeFolderButton->setIcon (pixmap);
+	m_changeFolderButton->setObjectName ("ChangeFolder");
 	leftRibbonLayout->addWidget (m_changeFolderButton);
 
 	m_mainSplitter = new QSplitter (Qt::Horizontal, this);
+	//m_mainSplitter->setOpaqueResize (false);
 	layout->addWidget (m_mainSplitter);
 
+	QWidget *folderLayoutContainer = new QWidget (m_mainSplitter);
+	QVBoxLayout *folderDisplayLayout = new QVBoxLayout (folderLayoutContainer);
+	folderDisplayLayout->setContentsMargins (0, 0, 0, 0);
+	
+	m_folderNameLabel = new CompressibleLabel (m_mainSplitter);
+	m_folderNameLabel->setObjectName ("DirLabel");
+	folderDisplayLayout->addWidget (m_folderNameLabel);
+	
 	m_lessonsListView = new QListView (m_mainSplitter);
+	folderDisplayLayout->addWidget (m_lessonsListView);
+	folderDisplayLayout->setStretchFactor (m_lessonsListView, 1);
 
 	m_lessonListModel = new QStandardItemModel (this);
 	m_lessonsListView->setModel (m_lessonListModel);
@@ -60,6 +83,8 @@ void MainWindow::launchUserInterface ()
 
 void MainWindow::displayLessonList (QDir folder, QFileInfoList & lessonList)
 {
+	m_folderNameLabel->setFullText (folder.absolutePath ());
+
 	m_lessonListModel->clear ();
 	
 	for (auto lesson : lessonList)
