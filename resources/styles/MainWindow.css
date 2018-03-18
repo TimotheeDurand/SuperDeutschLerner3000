@@ -72,15 +72,22 @@ QTableView::item:selected:!active {
 	color: #f1f1f1;
 }
 
+QLabel#DirLabel{
+	font: 14px;
+	border: 1px solid #3f3f46;
+	padding: 8px 0px 8px 0px
+}
+
 QPushButton{
 	width: 30px;
 	height: 30px;
 	background-color: transparent;
-	margin: 10px;	
+	margin: 10px 10px 10px 10px;
 }
 
 QPushButton#ChangeFolder{
 	border-image: url(:/icons/folder.svg);
+	margin: 0px 10px 10px 10px;
 }
 
 QPushButton#ChangeFolder:hover{
