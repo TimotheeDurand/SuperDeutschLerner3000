@@ -38,6 +38,8 @@ public:
 	void selectNewLessonFolder (QDir dir);
 	void showLessons ();
 
+	void showLesson (QFileInfo lessonFileInfo);
+
 	void startTraining (QFileInfo lessonFileInfo);
 	void answer (QString givenAnswer);
 	void closeTraining ();

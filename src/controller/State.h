@@ -12,6 +12,8 @@ public:
 	virtual void selectNewLessonFolder (Controller & controller, QDir dir) const {}
 	virtual void showLessons (Controller & controller) const {}
 
+	virtual void showLesson (Controller & controller, QFileInfo lessonFileInfo) const {}
+
 	virtual void startTraining (Controller & controller, QFileInfo lessonFileInfo) const {}
 	virtual void answer (Controller & controller, QString givenAnswer) const {}
 	virtual void closeTraining (Controller & controller) const {}

@@ -30,6 +30,11 @@ void Controller::showLessons ()
 	currentState->showLessons (*this);
 }
 
+void Controller::showLesson (QFileInfo lessonFileInfo)
+{
+	currentState->showLesson (*this, lessonFileInfo);
+}
+
 void Controller::startTraining (QFileInfo lessonFileInfo)
 {
 	currentState->startTraining (*this, lessonFileInfo);

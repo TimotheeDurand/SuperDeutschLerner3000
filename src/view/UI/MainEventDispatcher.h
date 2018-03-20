@@ -14,9 +14,12 @@ public:
 	MainEventDispatcher (Controller* controller, GenericViewer* viewer);
 
 public slots:
-	void onLessonDoubleClicked (const QModelIndex &index);
+	void onLessonSelectionChanged (const QItemSelection & selected, const QItemSelection & deselected);
+	void onLessonDoubleClicked (const QModelIndex &idx);
 	void onWordTableItemChanged (QStandardItem* item);
 	void onChangeFolderButtonClicked ();
+	void onStartTrainingButtonClicked ();
+	void onStopTrainingButtonClicked ();
 
 private:
 	MainWindow * m_mainWindow;

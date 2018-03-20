@@ -14,6 +14,7 @@ public:
 	CLIViewer ();
 	virtual void launchUserInterface () override;
 	virtual void displayLessonList (QDir folder, QFileInfoList& lessonList) override;
+	virtual void showFullLesson (QVector<std::pair<QString, QString>> tuples);
 	void setEventDispatcher (CLIEventDispatcher* dispatcher) { eventDispatcher = dispatcher; }
 	void showCommandList ();
 	void showWorkingDirectory (QDir dir);

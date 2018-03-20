@@ -11,6 +11,18 @@ QWidget{
 	font: 14px;
 }
 
+QLabel#Info{
+	padding: 5px 5px 5px 5px;
+}
+
+QLabel#InfoScore{
+	padding: 5px 5px 5px 15px;
+}
+
+QLabel#InfoWords{
+	padding: 5px 5px 5px 5px;
+}
+
 QSplitter::handle{
 	background: #2d2d30;
 }
@@ -80,17 +92,44 @@ QLabel#DirLabel{
 }
 
 QPushButton{
-	width: 30px;
-	height: 30px;
+	width: 35px;
+	height: 35px;
 	background-color: transparent;
 	margin: 10px 10px 10px 10px;
 }
 
 QPushButton#ChangeFolder{
 	border-image: url(:/icons/folder.svg);
-	margin: 0px 10px 10px 10px;
+	margin: 2px 10px 10px 10px;
 }
 
 QPushButton#ChangeFolder:hover{
 	border-image: url(:/icons/folder-hover.svg)
 }
+
+QPushButton#ChangeFolder:disabled{
+	border-image: url(:/icons/folder-disabled.svg)
+}
+
+QPushButton#StartTraining{
+	border-image: url(:/icons/training.svg);
+}
+
+QPushButton#StartTraining:hover{
+	border-image: url(:/icons/training-hover.svg);
+}
+
+QPushButton#StartTraining:disabled{
+	/*border-image: url(:/icons/training-disabled.svg);*/
+	border-image: url(:/icons/training-disabled.svg);
+}
+
+QPushButton#StopTraining{
+	border-image: url(:/icons/stopTraining.svg);
+}
+
+QPushButton#StopTraining:hover{
+	border-image: url(:/icons/stopTraining-hover.svg);
+}
+
+

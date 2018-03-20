@@ -26,6 +26,11 @@ void CLIViewer::displayLessonList (QDir folder, QFileInfoList& lessonList)
 	}
 }
 
+void CLIViewer::showFullLesson (QVector<std::pair<QString, QString>> tuples)
+{
+	//TODO
+}
+
 void CLIViewer::showCommandList ()
 {
 	QList<QPair<QString, QString>> cmdHelps;

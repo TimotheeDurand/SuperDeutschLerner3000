@@ -1,8 +1,14 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
 	<file>icons/folder.svg</file>
-	<file>icons/cocarde.png</file>
 	<file>icons/folder-hover.svg</file>
+	<file>icons/folder-disabled.svg</file>
+	<file>icons/training.svg</file>
+	<file>icons/training-hover.svg</file>
+	<file>icons/training-disabled.svg</file>
+	<file>icons/stopTraining.svg</file>
+	<file>icons/stopTraining-hover.svg</file>
+	<file>icons/cocarde.png</file>
 	<file>styles/MainWindow.css</file>
 </qresource>
 </RCC>

@@ -1,10 +1,10 @@
-- double clic sur une leçon -> elle s'affiche
-- cliquer sur le bouton "training" pour lancer un entrainement
-- pendant l'entrainement, impossible de sélectionner d'autre leçon
-- afficher en gras la leçon qui est affichée / sur laquelle l'entrainement est réalisé
-- l'apparence du bouton change pour interrompre l'entrainement
-- le bouton s'affiche d'une couleur différente quand le mode est "en cours" -> s'inspirer de VSCode ?
-- afficher le score à la fin de l'entrainement
+OK double clic sur une leçon -> elle s'affiche
+OK cliquer sur le bouton "training" pour lancer un entrainement
+OK pendant l'entrainement, impossible de sélectionner d'autre leçon
+OK afficher en gras la leçon qui est affichée / sur laquelle l'entrainement est réalisé
+OK l'apparence du bouton change pour interrompre l'entrainement
+DELAYED le bouton s'affiche d'une couleur différente quand le mode est "en cours" -> s'inspirer de VSCode ?
+OK afficher le score à la fin de l'entrainement
 - ajouter un bouton pour créer une nouvelle leçon
 - ajouter toutes les fonctionnalités de création d'une leçon
 - en mode création, appuyer sur entrée fait passer à la traduction, puis au mot suivant
@@ -12,6 +12,6 @@
 - possibilité de réorganiser les mots (glisser déposer)
 - bouton pour sauvegarder une leçon
 - bouton pour modifier une leçon déjà existante
-- en mode affichage / entrainement, on ne peux pas sélectionner les mots
+OK en mode affichage / entrainement, on ne peux pas sélectionner les mots
 - fichier .les associés avec l'application, double clic sur le fichier lance l'application avec ce fichier affiché
 - retenir le dernier workspace utilisé lors de la fermeture de l'application
