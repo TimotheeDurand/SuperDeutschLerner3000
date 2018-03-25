@@ -30,6 +30,11 @@ void Controller::showLessons ()
 	currentState->showLessons (*this);
 }
 
+void Controller::refreshLessons ()
+{
+	currentState->refreshLessons (*this);
+}
+
 void Controller::showLesson (QFileInfo lessonFileInfo)
 {
 	currentState->showLesson (*this, lessonFileInfo);
@@ -50,32 +55,47 @@ void Controller::closeTraining ()
 	currentState->closeTraining (*this);
 }
 
-void Controller::createNewLesson ()
+void Controller::createNewLessonFile ()
 {
-	currentState->createNewLesson ();
+	currentState->createNewLessonFile (*this);
 }
 
-void Controller::editLesson ()
+void Controller::renameLessonFile (QFileInfo lessonFileInfo, QString newName)
 {
-	currentState->editLesson ();
+	currentState->renameLessonFile (*this, lessonFileInfo, newName);
+}
+
+void Controller::deleteLessonFile (QFileInfo lessonFileInfo)
+{
+	currentState->deleteLessonFile (*this, lessonFileInfo);
+}
+
+void Controller::editLesson (QFileInfo lessonFileInfo)
+{
+	currentState->editLesson (*this, lessonFileInfo);
 }
 
 void Controller::saveLesson ()
 {
-	currentState->saveLesson ();
+	currentState->saveLesson (*this);
 }
 
 void Controller::closeLesson ()
 {
-	currentState->closeLesson ();
+	currentState->closeLesson (*this);
 }
 
-void Controller::addNewTuple ()
+void Controller::addNewTuple (QString original, QString translated)
 {
-	currentState->addNewTuple ();
+	currentState->addNewTuple (*this, original, translated);
 }
 
-void Controller::deleteTuple ()
+void Controller::deleteTuple (int idx)
 {
-	currentState->deleteTuple ();
+	currentState->deleteTuple (*this, idx);
+}
+
+void Controller::editTuple (int idx, QString original, QString translated)
+{
+	currentState->editTuple (*this, idx, original, translated);
 }

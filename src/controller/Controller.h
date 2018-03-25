@@ -5,6 +5,7 @@
 #include "State.h"
 #include "src\parser\Parser.h"
 #include "src\view\GenericViewer.h"
+#include "model\TrainingSession.h"
 
 class State;
 class StateEditing;
@@ -33,10 +34,19 @@ public:
 	StateEditing* getStateEditing () { return stateEditing; }
 	StateTraining* getStateTraining () { return stateTraining; }
 
-	// functions available for the viewer :
+	TrainingSession* getTrainingSession () { return trainingSession; }
+	void setTrainingSession (TrainingSession* trainingSession) { this->trainingSession = trainingSession; }
 
+	Lesson* getEditedLesson () { return editedLesson; }
+	void setEditedLesson (Lesson* lesson) { editedLesson = lesson; }
+
+	QFileInfo getEditedLessonFileInfo () { return editedLessonFileInfo; }
+	void setEditedLessonFileInfo (QFileInfo infos) { editedLessonFileInfo = infos; }
+
+	// functions available for the viewer :
 	void selectNewLessonFolder (QDir dir);
 	void showLessons ();
+	void refreshLessons ();
 
 	void showLesson (QFileInfo lessonFileInfo);
 
@@ -44,12 +54,17 @@ public:
 	void answer (QString givenAnswer);
 	void closeTraining ();
 
-	void createNewLesson ();
-	void editLesson ();
+	void createNewLessonFile ();
+	void renameLessonFile (QFileInfo lessonFileInfo, QString newName);
+	void deleteLessonFile (QFileInfo lessonFileInfo);
+	void editLesson (QFileInfo lessonFileInfo);
 	void saveLesson ();
 	void closeLesson ();
-	void addNewTuple ();
-	void deleteTuple ();
+	void addNewTuple (QString original, QString translated);
+	void deleteTuple (int idx);
+	void editTuple (int idx, QString original, QString translated);
+
+	static QString getFileExtention () { return DEFAULT_LESSON_FILE_EXTENSION; }
 
 private:
 	State *currentState;
@@ -60,5 +75,9 @@ private:
 	Parser parser;
 	QDir currentDir = QDir::currentPath ();
 
-	GenericViewer *viewer = NULL;
+	GenericViewer *viewer = nullptr;
+
+	Lesson *editedLesson = nullptr;
+	QFileInfo editedLessonFileInfo;
+	TrainingSession* trainingSession = nullptr;
 };

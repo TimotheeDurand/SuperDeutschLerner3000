@@ -76,6 +76,35 @@ MainWindow::MainWindow ()
 	m_stopTrainingButton->hide ();
 	leftRibbonLayout->addWidget (m_stopTrainingButton);
 
+	m_createLessonButton = new QPushButton (this);
+	m_createLessonButton->setObjectName ("CreateLesson");
+	m_createLessonButton->setToolTip ("Create a new lesson");
+	leftRibbonLayout->addWidget (m_createLessonButton);
+
+	m_deleteLessonButton = new QPushButton (this);
+	m_deleteLessonButton->setObjectName ("DeleteLesson");
+	m_deleteLessonButton->setToolTip ("Delete selected lesson");
+	m_deleteLessonButton->setDisabled (true);
+	leftRibbonLayout->addWidget (m_deleteLessonButton);
+
+	m_editLessonButton = new QPushButton (this);
+	m_editLessonButton->setObjectName ("EditLesson");
+	m_editLessonButton->setToolTip ("Edit selected lesson");
+	m_editLessonButton->setDisabled (true);
+	leftRibbonLayout->addWidget (m_editLessonButton);
+
+	m_closeLessonButton = new QPushButton (this);
+	m_closeLessonButton->setObjectName ("CloseLesson");
+	m_closeLessonButton->setToolTip ("Stop editing");
+	m_closeLessonButton->hide ();
+	leftRibbonLayout->addWidget (m_closeLessonButton);
+
+	m_saveLessonButton = new QPushButton (this);
+	m_saveLessonButton->setObjectName ("SaveLesson");
+	m_saveLessonButton->setToolTip ("Save lesson");
+	m_saveLessonButton->hide ();
+	leftRibbonLayout->addWidget (m_saveLessonButton);
+
 	m_mainSplitter = new QSplitter (Qt::Horizontal, this);
 	layout->addWidget (m_mainSplitter);
 
@@ -86,8 +115,12 @@ MainWindow::MainWindow ()
 	m_folderNameLabel = new CompressibleLabel (m_mainSplitter);
 	m_folderNameLabel->setObjectName ("DirLabel");
 	folderDisplayLayout->addWidget (m_folderNameLabel);
+
+	m_lessonDelegate = new LessonDelegate (this);
 	
 	m_lessonsListView = new QListView (m_mainSplitter);
+	m_lessonsListView->setEditTriggers (QAbstractItemView::DoubleClicked);
+	m_lessonsListView->setItemDelegate (m_lessonDelegate);
 	folderDisplayLayout->addWidget (m_lessonsListView);
 	folderDisplayLayout->setStretchFactor (m_lessonsListView, 1);
 
@@ -115,11 +148,17 @@ void MainWindow::setEventDispatcher (MainEventDispatcher * dispatcher)
 {
 	m_eventDispatcher = dispatcher;
 	QObject::connect (m_lessonsListView->selectionModel(), &QItemSelectionModel::selectionChanged, m_eventDispatcher, &MainEventDispatcher::onLessonSelectionChanged);
-	QObject::connect (m_lessonsListView, &QListView::doubleClicked, m_eventDispatcher, &MainEventDispatcher::onLessonDoubleClicked);
+	QObject::connect (m_lessonsListView, &QListView::clicked, m_eventDispatcher, &MainEventDispatcher::onLessonClicked);
 	QObject::connect (m_wordListModel, &QStandardItemModel::itemChanged, m_eventDispatcher, &MainEventDispatcher::onWordTableItemChanged);
+	QObject::connect (m_lessonDelegate, &LessonDelegate::lessonNameChanged, m_eventDispatcher, &MainEventDispatcher::onLessonNameChanged);
 	QObject::connect (m_changeFolderButton, &QPushButton::clicked, m_eventDispatcher, &MainEventDispatcher::onChangeFolderButtonClicked);
 	QObject::connect (m_startTrainingButton, &QPushButton::clicked, m_eventDispatcher, &MainEventDispatcher::onStartTrainingButtonClicked);
 	QObject::connect (m_stopTrainingButton, &QPushButton::clicked, m_eventDispatcher, &MainEventDispatcher::onStopTrainingButtonClicked);
+	QObject::connect (m_createLessonButton, &QPushButton::clicked, m_eventDispatcher, &MainEventDispatcher::onButtonCreateLessonClicked);
+	QObject::connect (m_deleteLessonButton, &QPushButton::clicked, m_eventDispatcher, &MainEventDispatcher::onButtonDeleteLessonClicked);
+	QObject::connect (m_editLessonButton, &QPushButton::clicked, m_eventDispatcher, &MainEventDispatcher::onButtonStartEditingClicked);
+	QObject::connect (m_closeLessonButton, &QPushButton::clicked, m_eventDispatcher, &MainEventDispatcher::onButtonCloseEditingClicked);
+	QObject::connect (m_saveLessonButton, &QPushButton::clicked, m_eventDispatcher, &MainEventDispatcher::onButtonSaveLessonClicked);
 }
 
 void MainWindow::launchUserInterface ()
@@ -138,14 +177,55 @@ void MainWindow::displayLessonList (QDir folder, QFileInfoList & lessonList)
 	for (auto lesson : lessonList)
 	{
 		QStandardItem *item = new QStandardItem(lesson.fileName ());
-		item->setEditable (false);
 		m_lessonListModel->appendRow (item);
 	}
 }
 
-void MainWindow::showFileError (QFileInfo fileInfos)
+void MainWindow::refreshLessonList (QDir folder, QFileInfoList & lessonList)
 {
-	QMessageBox::warning (this, "File error", "Could not open file " + fileInfos.fileName ());
+	m_lessonsListView->clearSelection ();
+	m_lessonListModel->clear ();
+	m_wordListModel->removeRows (0, m_wordListModel->rowCount ());
+
+	m_folderNameLabel->setFullText (folder.absolutePath ());
+
+	for (auto lesson : lessonList)
+	{
+		QStandardItem *item = new QStandardItem (lesson.fileName ());
+		m_lessonListModel->appendRow (item);
+	}
+}
+
+void MainWindow::showFileError (QFileInfo fileInfos, FileError error)
+{
+	QModelIndexList list;
+	QStandardItem *item;
+	switch (error)
+	{
+	case DIR_UNACCESSIBLE:
+		QMessageBox::warning (this, "Directory error", fileInfos.absolutePath () + " is unaccessible.");
+		break;
+	case CANNOT_OPEN:
+		QMessageBox::warning (this, "File opening error", "Could not open file \'" + fileInfos.fileName () + "\'.");
+		break;
+	case CANNOT_RENAME:
+		QMessageBox::warning (this, "Renaming error", "Could not rename file \'" + fileInfos.baseName () + "\'.");
+		list = m_lessonListModel->match (m_lessonListModel->index (0, 0), Qt::DisplayRole, this->getNewLessonName());
+		if (!list.empty ())
+		{
+			item = m_lessonListModel->item(list.first ().row(), list.first().column());
+			item->setText (getLastLessonName ());
+		}
+		break;
+	case CANNOT_CREATE:
+		QMessageBox::warning (this, "File error", "Could not create a new file.");
+		break;
+	case CANNOT_DELETE:
+		QMessageBox::warning (this, "File error", "Could not delete file \'" + fileInfos.baseName () + "\'.");
+		break;
+	case CANNOT_WRITE:
+		QMessageBox::warning (this, "File error", "Could not write file \'" + fileInfos.baseName () + "\'.");
+	}
 }
 
 void MainWindow::showTrainingStarted (QFileInfo fileInfos)
@@ -157,10 +237,13 @@ void MainWindow::showTrainingStarted (QFileInfo fileInfos)
 	m_stopTrainingButton->show ();
 	m_changeFolderButton->setDisabled (true);
 	m_lessonsListView->setDisabled (true);
+	m_editLessonButton->setDisabled (true);
+	m_deleteLessonButton->setDisabled (true);
+	m_createLessonButton->setDisabled (true);
 	setDownRibbonColor (TRAIN_COLOR_BG, TRAIN_COLOR_FG);
-	askedWordCount = 0;
-	correctWordsCount = 0;
-	setInfo ("Training started on \'" + fileInfos.baseName () + "\' !");
+	m_askedWordCount = 0;
+	m_correctWordsCount = 0;
+	setInfo ("Training started on \'" + fileInfos.fileName () + "\' !");
 	setInfoScore (0, 0);
 }
 
@@ -174,6 +257,9 @@ void MainWindow::showTrainingEnded (int correctAnswers, int totalAnswers, QList<
 	m_startTrainingButton->show ();
 	m_changeFolderButton->setDisabled (false);
 	m_lessonsListView->setDisabled (false);
+	m_editLessonButton->setDisabled (false);
+	m_deleteLessonButton->setDisabled (false);
+	m_createLessonButton->setDisabled (false);
 
 	double score = ((double)correctAnswers / (double)totalAnswers)*20.0;
 	setInfo ("Training finished ! Your grade : " + 
@@ -183,8 +269,8 @@ void MainWindow::showTrainingEnded (int correctAnswers, int totalAnswers, QList<
 
 void MainWindow::askWord (QString word, bool original)
 {
-	askedWordCount++;
-	setInfoWord ("Total: " + QString::number (askedWordCount) + "/" + QString::number (currentWordCount));
+	m_askedWordCount++;
+	setInfoWord ("Total: " + QString::number (m_askedWordCount) + "/" + QString::number (m_currentWordCount));
 	
 	QStandardItem *item = new QStandardItem (word);
 	item->setEditable (false);
@@ -223,7 +309,7 @@ void MainWindow::giveAnswer (QString originalWord, QString translatedWord, bool 
 		}
 		if (success)
 		{
-			correctWordsCount++;
+			m_correctWordsCount++;
 			askedItem->setForeground (Qt::GlobalColor::green);
 		}
 		else
@@ -233,10 +319,10 @@ void MainWindow::giveAnswer (QString originalWord, QString translatedWord, bool 
 		askedItem->setEditable (false);
 	}
 
-	setInfoScore (correctWordsCount, askedWordCount-correctWordsCount);
+	setInfoScore (m_correctWordsCount, m_askedWordCount-m_correctWordsCount);
 }
 
-void MainWindow::showFullLesson (QVector<std::pair<QString, QString>> tuples)
+void MainWindow::showFullLesson (QFileInfo lessonFile, QVector<std::pair<QString, QString>> tuples)
 {
 	resetTableAndInfo ();
 	m_wordsTable->setSelectionMode (QAbstractItemView::NoSelection);
@@ -246,9 +332,110 @@ void MainWindow::showFullLesson (QVector<std::pair<QString, QString>> tuples)
 		QStandardItem *itemTr = new QStandardItem (tuple.second);
 		m_wordListModel->appendRow ({ itemOri, itemTr });
 	}
-	currentWordCount = tuples.size ();
+	m_currentWordCount = tuples.size ();
+	setInfo ("file: \'" + lessonFile.absoluteFilePath() + "\'");
 	QString strInfo = QString::number(tuples.size ()) + " words";
 	setInfoWord(strInfo);
+}
+
+void MainWindow::showEditingStarted (QFileInfo fileInfos, QVector<std::pair<QString, QString>>& tuples)
+{
+	resetTableAndInfo ();
+	setDownRibbonColor (EDITING_COLOR_BG, EDITING_COLOR_FG);
+	setInfo ("You are now editing \'" + fileInfos.fileName () + "\'");
+	m_wordsTable->setSelectionMode (QAbstractItemView::SingleSelection);
+	m_wordsTable->setEditTriggers (QAbstractItemView::AllEditTriggers);
+	m_startTrainingButton->setDisabled (true);
+	m_changeFolderButton->setDisabled (true);
+	m_lessonsListView->setDisabled (true);
+	m_deleteLessonButton->setDisabled (true);
+	m_createLessonButton->setDisabled (true);
+	m_editLessonButton->hide ();
+	m_closeLessonButton->show ();
+	m_saveLessonButton->show ();
+	for (auto tuple : tuples)
+	{
+		QStandardItem *itemOri = new QStandardItem (tuple.first);
+		QStandardItem *itemTr = new QStandardItem (tuple.second);
+		m_wordListModel->appendRow ({ itemOri, itemTr });
+	}
+	m_wordListModel->appendRow ({ new QStandardItem (), new QStandardItem () });
+	QModelIndex newItemIdx = m_wordListModel->index (m_wordListModel->rowCount () - 1, OR_COL);
+	m_wordsTable->setCurrentIndex (newItemIdx);
+	m_wordsTable->edit (newItemIdx);
+	m_currentWordCount = tuples.size ();
+	QString strInfo = QString::number (tuples.size ()) + " words";
+	setInfoWord (strInfo);
+}
+
+void MainWindow::showTupleInvalid (QString old_originalWord, QString old_translatedWord, int idx)
+{
+	bool edited = idx < m_wordListModel->rowCount () - 1;
+	if (edited)
+	{
+		setInfo ("ERROR: Invalid word, cannot edit");
+	}
+	else
+	{
+		setInfo ("ERROR: Invalid word, cannot add");
+	}
+	QString strInfo = QString::number (m_wordListModel->rowCount ()) + " words";
+	QStandardItem* itemOr = m_wordListModel->item (idx, OR_COL);
+	QStandardItem* itemTr = m_wordListModel->item (idx, TR_COL);
+	m_dontListenEdit = true;
+	itemOr->setText (old_originalWord);
+	itemTr->setText (old_translatedWord);
+	m_dontListenEdit = false;
+}
+
+void MainWindow::showTupleAdded (QString originalWord, QString translatedWord, int index)
+{
+	bool edited = index < m_wordListModel->rowCount () - 1;
+	if (edited)
+	{
+		setInfo ("Word edited : \'" + originalWord + " : " + translatedWord + "\'");
+	}
+	else
+	{
+		setInfo ("Word added : \'" + originalWord + " : " + translatedWord + "\'");
+
+		m_wordListModel->appendRow ({ new QStandardItem (), new QStandardItem () });
+		QModelIndex newItemIdx = m_wordListModel->index (m_wordListModel->rowCount () - 1, OR_COL);
+		m_wordsTable->setCurrentIndex (newItemIdx);
+		m_wordsTable->edit (newItemIdx);
+	}
+	QString strInfo = QString::number (m_wordListModel->rowCount ()) + " words";
+}
+
+void MainWindow::showLessonSaved (QFileInfo lessonFile)
+{
+	setInfo ("\'" + lessonFile.fileName () + "\' successfully saved");
+}
+
+void MainWindow::showLessonClosed (QFileInfo lessonFile)
+{
+	setFocus ();
+	m_wordsTable->clearSelection ();
+	m_wordsTable->setSelectionMode (QAbstractItemView::NoSelection);
+	m_wordsTable->setEditTriggers (QAbstractItemView::NoEditTriggers);
+	m_startTrainingButton->setDisabled (false);
+	m_changeFolderButton->setDisabled (false);
+	m_lessonsListView->setDisabled (false);
+	m_deleteLessonButton->setDisabled (false);
+	m_createLessonButton->setDisabled (false);
+	m_saveLessonButton->hide ();
+	m_closeLessonButton->hide ();
+	m_editLessonButton->show ();
+}
+
+void MainWindow::showFileCreated (QFileInfo lessonFile)
+{
+	setInfo ("\'" + lessonFile.fileName() + "\' created");
+}
+
+void MainWindow::showFileDeleted (QFileInfo lessonFile)
+{
+	setInfo ("\'" + lessonFile.fileName() + "\' moved to the recycle bin");
 }
 
 QDir MainWindow::openFileDialog (QDir dir)
@@ -260,6 +447,13 @@ QDir MainWindow::openFileDialog (QDir dir)
 	fileDialog.exec ();
 	
 	return fileDialog.directory ();
+}
+
+void MainWindow::disableLessonInteractionButtons (bool disable)
+{
+	m_startTrainingButton->setDisabled (disable);
+	m_deleteLessonButton->setDisabled (disable);
+	m_editLessonButton->setDisabled (disable);
 }
 
 void MainWindow::setInfo (const QString &info)

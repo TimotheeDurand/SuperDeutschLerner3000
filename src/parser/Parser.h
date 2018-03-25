@@ -20,4 +20,8 @@ public:
 	std::tuple<Lesson, Parser::IOStatus> parseFile (const QFileInfo &fileInfos);
 	IOStatus writeFile (Lesson &lesson, const QFileInfo &fileInfos);
 	QFileInfoList listLessonsInFolder (const QDir &dir);
+	QString MoveFileToTrash (const QFileInfo &fileInfo);
+
+private:
+	QString MoveToTrashImpl (const QFileInfo & fileinfo);
 };

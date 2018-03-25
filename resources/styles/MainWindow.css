@@ -120,7 +120,6 @@ QPushButton#StartTraining:hover{
 }
 
 QPushButton#StartTraining:disabled{
-	/*border-image: url(:/icons/training-disabled.svg);*/
 	border-image: url(:/icons/training-disabled.svg);
 }
 
@@ -132,4 +131,63 @@ QPushButton#StopTraining:hover{
 	border-image: url(:/icons/stopTraining-hover.svg);
 }
 
+QPushButton#CreateLesson{
+	border-image: url(:/icons/createLesson.svg);
+}
+
+QPushButton#CreateLesson:hover{
+	border-image: url(:/icons/createLesson-hover.svg);
+}
+
+QPushButton#CreateLesson:disabled{
+	border-image: url(:/icons/createLesson-disabled.svg);
+}
+
+QPushButton#DeleteLesson{
+	border-image: url(:/icons/deleteLesson.svg);
+}
+
+QPushButton#DeleteLesson:hover{
+	border-image: url(:/icons/deleteLesson-hover.svg);
+}
+
+QPushButton#DeleteLesson:disabled{
+	border-image: url(:/icons/deleteLesson-disabled.svg);
+}
+
+QPushButton#EditLesson{
+	border-image: url(:/icons/editLesson.svg);
+}
+
+QPushButton#EditLesson:hover{
+	border-image: url(:/icons/editLesson-hover.svg);
+}
+
+QPushButton#EditLesson:disabled{
+	border-image: url(:/icons/editLesson-disabled.svg);
+}
+
+QPushButton#SaveLesson{
+	border-image: url(:/icons/save.svg);
+}
+
+QPushButton#SaveLesson:hover{
+	border-image: url(:/icons/save-hover.svg);
+}
+
+QPushButton#SaveLesson:disabled{
+	border-image: url(:/icons/save-disabled.svg);
+}
+
+QPushButton#CloseLesson{
+	border-image: url(:/icons/close.svg);
+}
+
+QPushButton#CloseLesson:hover{
+	border-image: url(:/icons/close-hover.svg);
+}
+
+QPushButton#CloseLesson:disabled{
+	border-image: url(:/icons/close-disabled.svg);
+}
 

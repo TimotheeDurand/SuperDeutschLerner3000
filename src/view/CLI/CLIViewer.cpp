@@ -26,7 +26,12 @@ void CLIViewer::displayLessonList (QDir folder, QFileInfoList& lessonList)
 	}
 }
 
-void CLIViewer::showFullLesson (QVector<std::pair<QString, QString>> tuples)
+void CLIViewer::refreshLessonList (QDir folder, QFileInfoList & lessonList)
+{
+	//TODO
+}
+
+void CLIViewer::showFullLesson (QFileInfo lessonFile, QVector<std::pair<QString, QString>> tuples)
 {
 	//TODO
 }
@@ -71,8 +76,9 @@ void CLIViewer::showFileMissing ()
 	cout << "Please provide a lesson file name" << endl;
 }
 
-void CLIViewer::showFileError (QFileInfo fileInfo)
+void CLIViewer::showFileError (QFileInfo fileInfo, FileError error)
 {
+	//TODO : treat all cases
 	cout << "Error" << " : could not open file \'" << fileInfo.fileName() << '\''<< endl;
 }
 
@@ -152,6 +158,31 @@ void CLIViewer::askWord (QString word, bool original)
 	cout << "What's the meaning of : \"" << flush;
 	utf8Print (word);
 	cout << '\"' << endl;
+}
+
+void CLIViewer::showEditingStarted (QFileInfo fileInfos, QVector<std::pair<QString, QString>>& tuples)
+{
+	//todo
+}
+
+void CLIViewer::showTupleInvalid (QString old_originalWord, QString old_translateWord, int index)
+{
+	//todo
+}
+
+void CLIViewer::showLessonSaved (QFileInfo lessonFile)
+{
+	//todo
+}
+
+void CLIViewer::showLessonClosed (QFileInfo lessonFile)
+{
+	//todo
+}
+
+void CLIViewer::showTupleAdded (QString originalWord, QString translatedWord, int index)
+{
+	//todo
 }
 
 bool CLIViewer::listenKeyBoardInput ()

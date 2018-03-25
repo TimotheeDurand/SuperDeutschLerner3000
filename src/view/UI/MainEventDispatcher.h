@@ -15,12 +15,19 @@ public:
 
 public slots:
 	void onLessonSelectionChanged (const QItemSelection & selected, const QItemSelection & deselected);
-	void onLessonDoubleClicked (const QModelIndex &idx);
+	void onLessonClicked (const QModelIndex &idx);
 	void onWordTableItemChanged (QStandardItem* item);
+	void onLessonNameChanged (QString oldName, QString newName);
 	void onChangeFolderButtonClicked ();
 	void onStartTrainingButtonClicked ();
 	void onStopTrainingButtonClicked ();
+	void onButtonCreateLessonClicked ();
+	void onButtonDeleteLessonClicked ();
+	void onButtonStartEditingClicked ();
+	void onButtonCloseEditingClicked ();
+	void onButtonSaveLessonClicked ();
 
 private:
+	void onLessonSelected (const QModelIndex & index);
 	MainWindow * m_mainWindow;
 };

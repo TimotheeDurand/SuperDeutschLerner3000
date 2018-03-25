@@ -24,8 +24,8 @@ public:
 	void setTranslated (QString translatedLanguageWord) { m_translated = translatedLanguageWord; }
 
 	//getters
-	QString getTranslated () { return m_translated; }
-	QString getOriginal () { return m_original; }
+	QString getTranslated () const { return m_translated; }
+	QString getOriginal () const { return m_original; }
 	bool isValid () { return m_valid; }
 
 	//operators used to serialize / deserialize the object
