@@ -18,9 +18,10 @@ public:
 	virtual void showFullLesson (QFileInfo lessonFile, QVector<std::pair<QString, QString>> tuples) = 0;
 	virtual void showEditingStarted (QFileInfo fileInfos, QVector<std::pair<QString, QString>> &tuples) = 0;
 	virtual void showTupleInvalid (QString old_originalWord, QString old_translatedWord, int index) = 0;
+	virtual void showTupleAdded (QString originalWord, QString translatedWord, int index) = 0;
+	virtual void showRowDeleted (QString old_originalWord, QString old_translatedWord, int index) = 0;
 	virtual void showLessonSaved (QFileInfo lessonFile) = 0;
 	virtual void showLessonClosed (QFileInfo lessonFile) = 0;
-	virtual void showTupleAdded (QString originalWord, QString translatedWord, int index) = 0;
 	virtual void showFileCreated (QFileInfo lessonFile) = 0;
 	virtual void showFileDeleted (QFileInfo lessonFile) = 0;
 

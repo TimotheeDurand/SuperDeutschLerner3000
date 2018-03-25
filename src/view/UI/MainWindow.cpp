@@ -105,6 +105,12 @@ MainWindow::MainWindow ()
 	m_saveLessonButton->hide ();
 	leftRibbonLayout->addWidget (m_saveLessonButton);
 
+	m_deleteRowButton = new QPushButton (this);
+	m_deleteRowButton->setObjectName ("DeleteRow");
+	m_deleteRowButton->setToolTip ("Delete the selected row");
+	m_deleteRowButton->hide ();
+	leftRibbonLayout->addWidget (m_deleteRowButton);
+
 	m_mainSplitter = new QSplitter (Qt::Horizontal, this);
 	layout->addWidget (m_mainSplitter);
 
@@ -159,6 +165,7 @@ void MainWindow::setEventDispatcher (MainEventDispatcher * dispatcher)
 	QObject::connect (m_editLessonButton, &QPushButton::clicked, m_eventDispatcher, &MainEventDispatcher::onButtonStartEditingClicked);
 	QObject::connect (m_closeLessonButton, &QPushButton::clicked, m_eventDispatcher, &MainEventDispatcher::onButtonCloseEditingClicked);
 	QObject::connect (m_saveLessonButton, &QPushButton::clicked, m_eventDispatcher, &MainEventDispatcher::onButtonSaveLessonClicked);
+	QObject::connect (m_deleteRowButton, &QPushButton::clicked, m_eventDispatcher, &MainEventDispatcher::onButtonDeleteRowClicked);
 }
 
 void MainWindow::launchUserInterface ()
@@ -353,6 +360,7 @@ void MainWindow::showEditingStarted (QFileInfo fileInfos, QVector<std::pair<QStr
 	m_editLessonButton->hide ();
 	m_closeLessonButton->show ();
 	m_saveLessonButton->show ();
+	m_deleteRowButton->show ();
 	for (auto tuple : tuples)
 	{
 		QStandardItem *itemOri = new QStandardItem (tuple.first);
@@ -407,6 +415,12 @@ void MainWindow::showTupleAdded (QString originalWord, QString translatedWord, i
 	QString strInfo = QString::number (m_wordListModel->rowCount ()) + " words";
 }
 
+void MainWindow::showRowDeleted (QString old_originalWord, QString old_translatedWord, int index)
+{
+	setInfo ("Word deleted : \'" + old_originalWord + " : " + old_translatedWord + "\'");
+	m_wordListModel->removeRow (index);
+}
+
 void MainWindow::showLessonSaved (QFileInfo lessonFile)
 {
 	setInfo ("\'" + lessonFile.fileName () + "\' successfully saved");
@@ -425,6 +439,7 @@ void MainWindow::showLessonClosed (QFileInfo lessonFile)
 	m_createLessonButton->setDisabled (false);
 	m_saveLessonButton->hide ();
 	m_closeLessonButton->hide ();
+	m_deleteRowButton->hide ();
 	m_editLessonButton->show ();
 }
 
@@ -501,6 +516,16 @@ QStandardItem* MainWindow::getSelectedLesson ()
 		item = m_lessonListModel->item (idx.row ());
 	}
 	return item;
+}
+
+int MainWindow::getSelectedRow ()
+{
+	if (!m_wordsTable->selectionModel ()->selectedIndexes ().isEmpty ())
+	{
+		QModelIndex idx = m_wordsTable->selectionModel ()->selectedIndexes ().first ();
+		return idx.row ();
+	}
+	return NO_ROW;
 }
 
 void MainWindow::resetTableAndInfo ()

@@ -133,3 +133,12 @@ void MainEventDispatcher::onButtonSaveLessonClicked ()
 {
 	m_controller->saveLesson ();
 }
+
+void MainEventDispatcher::onButtonDeleteRowClicked ()
+{
+	int row = m_mainWindow->getSelectedRow ();
+	if (row != NO_ROW)
+	{
+		m_controller->deleteTuple (row);
+	}
+}

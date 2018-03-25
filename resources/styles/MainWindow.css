@@ -191,3 +191,16 @@ QPushButton#CloseLesson:disabled{
 	border-image: url(:/icons/close-disabled.svg);
 }
 
+QPushButton#DeleteRow{
+	border-image: url(:/icons/deleteRow.svg);
+}
+
+QPushButton#DeleteRow:hover{
+	border-image: url(:/icons/deleteRow-hover.svg);
+}
+
+QPushButton#DeleteRow:disabled{
+	border-image: url(:/icons/deleteRow-disabled.svg);
+}
+
+

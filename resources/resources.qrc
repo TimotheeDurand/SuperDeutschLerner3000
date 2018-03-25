@@ -23,6 +23,9 @@
 	<file>icons/close.svg</file>
 	<file>icons/close-hover.svg</file>
 	<file>icons/close-disabled.svg</file>
+	<file>icons/deleteRow.svg</file>
+	<file>icons/deleteRow-hover.svg</file>
+	<file>icons/deleteRow-disabled.svg</file>
 	<file>icons/cocarde.png</file>
 	<file>styles/MainWindow.css</file>
 </qresource>

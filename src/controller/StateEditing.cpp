@@ -24,9 +24,12 @@ void StateEditing::addNewTuple (Controller & controller, QString original, QStri
 void StateEditing::deleteTuple (Controller & controller, int idx) const
 {
 	Lesson* lesson = controller.getEditedLesson ();
-	if (idx > 0 && idx < lesson->getDictionnary ().size ())
+	if (idx >= 0 && idx < lesson->getDictionnary ().size ())
 	{
+		QString original = lesson->getDictionnary ().at (idx).getOriginal ();
+		QString translated = lesson->getDictionnary ().at (idx).getTranslated ();
 		lesson->getDictionnary ().removeAt (idx);
+		controller.getViewer ()->showRowDeleted (original, translated, idx);
 	}
 }
 
@@ -38,7 +41,7 @@ void StateEditing::editTuple (Controller & controller, int idx, QString original
 	textStream << original << " : " << translated;
 	Tuple newTuple;
 	textStream >> newTuple;
-	if (idx > 0 && idx < lesson->getDictionnary ().size ())
+	if (idx >= 0 && idx < lesson->getDictionnary ().size ())
 	{
 		if (newTuple.isValid ())
 		{

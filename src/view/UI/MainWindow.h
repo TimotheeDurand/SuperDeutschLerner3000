@@ -15,6 +15,7 @@
 
 #define OR_COL 0
 #define TR_COL 1
+#define NO_ROW -1
 #define TRAIN_COLOR_BG "#ca5100"
 #define TRAIN_COLOR_FG "#ffb17c"
 #define DEFAULT_COLOR_BG "#014b7c"
@@ -45,33 +46,35 @@ public:
 	virtual void showEditingStarted (QFileInfo fileInfos, QVector<std::pair<QString, QString>>& tuples) override;
 	virtual void showTupleInvalid (QString old_originalWord, QString old_translatedWord, int idx) override;
 	virtual void showTupleAdded (QString originalWord, QString translatedWord, int index) override;
+	virtual void showRowDeleted (QString old_originalWord, QString old_translatedWord, int index) override;
 	virtual void showLessonSaved (QFileInfo lessonFile) override;
 	virtual void showLessonClosed (QFileInfo lessonFile) override;
 	virtual void showFileCreated (QFileInfo lessonFile) override;
 	virtual void showFileDeleted (QFileInfo lessonFile) override;
-
-	QDir openFileDialog (QDir dir);
-
-	void disableLessonInteractionButtons (bool disable);
-	void setInfo (const QString &info);
-	void setInfoWord (const QString &infoWords);
-	void setInfoScore (const QString &infoScore);
-	void setInfoScore (int correct, int incorrect);
-	void setDownRibbonColor (const QColor &color, const QColor & colorFG);
+	
 	QString getLastLessonName () { return m_lastLessonName; }
 	QString getNewLessonName () { return m_newLessonName; }
 	void setNewLessonName (QString name) { m_newLessonName = name; }
 	void setLastLessonName (QString name) { m_lastLessonName = name; }
+
+	QDir openFileDialog (QDir dir);
+	void disableLessonInteractionButtons (bool disable);
 	bool dontListenEdit () { return m_dontListenEdit; }
 
 	QStandardItemModel* getWordModel () { return m_wordListModel; }
 	QStandardItemModel* getLessonModel () { return m_lessonListModel; }
 	QTableView* getTableView () { return m_wordsTable; }
-	QModelIndex* getLastAskedIndex () { return lastAsked; }
 
+	int getSelectedRow ();
+	QModelIndex* getLastAskedIndex () { return lastAsked; }
 	QStandardItem* getSelectedLesson ();
 
-private:
+protected:
+	void setInfo (const QString &info);
+	void setInfoWord (const QString &infoWords);
+	void setInfoScore (const QString &infoScore);
+	void setInfoScore (int correct, int incorrect);
+	void setDownRibbonColor (const QColor &color, const QColor & colorFG);
 	void resetTableAndInfo ();
 
 	QListView *m_lessonsListView;
@@ -95,6 +98,7 @@ private:
 	QPushButton *m_editLessonButton;
 	QPushButton *m_closeLessonButton;
 	QPushButton *m_saveLessonButton;
+	QPushButton *m_deleteRowButton;
 
 	MainEventDispatcher *m_eventDispatcher;
 
