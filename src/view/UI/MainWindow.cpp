@@ -144,6 +144,7 @@ MainWindow::MainWindow ()
 	m_wordsTable->verticalHeader ()->hide ();
 	m_wordsTable->setSelectionMode (QAbstractItemView::NoSelection);
 	m_wordsTable->setEditTriggers (QAbstractItemView::NoEditTriggers);
+	m_wordsTable->setAlternatingRowColors (true);
 
 	m_mainSplitter->setStretchFactor (0, 0);
 	m_mainSplitter->setStretchFactor (1, 1);

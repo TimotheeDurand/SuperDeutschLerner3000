@@ -7,23 +7,27 @@ QWidget#MainWindow{
 /*used for QTableView delegate*/
 QWidget{
 	background-color: #2d2d30;
-	color: #f1f1f1;
-	font: 14px;
+	color: #bcbcbc;
+	font: 16px;
 }
 
 QLabel#Info{
+	font: 14px;
 	padding: 5px 5px 5px 5px;
 }
 
 QLabel#InfoScore{
+	font: 14px;
 	padding: 5px 5px 5px 15px;
 }
 
 QLabel#InfoWords{
+	font: 14px;
 	padding: 5px 5px 5px 5px;
 }
 
 QSplitter::handle{
+	font: 14px;
 	background: #2d2d30;
 }
 
@@ -63,7 +67,6 @@ QScrollBar::sub-line:vertical {
 
 QListView{
 	background-color: #252526;
-	color: #f1f1f1;
 	border: 1px solid #3f3f46;
 	outline: none;
 }
@@ -73,20 +76,19 @@ QListView::item{
 }
 
 QListView::item:selected:active{
+	color: #f0f0f0;
     background-color: #007acc;
-	color: #f1f1f1;
 }
 
 QListView::item:selected:!active{
+	color: #bcbcbc;
     background-color: #3f3f46;
-	color: #f1f1f1;
 }
 
 QHeaderView::section{
 	background-color: #333337;
-	color: #f1f1f1;
+	font: 16px;
 	border: none;
-	font: 14px;
 	padding: 8px;
 	border: 1px solid #3f3f46;
 	border-width: 0px 1px 1px 0px;
@@ -94,13 +96,13 @@ QHeaderView::section{
 
 QHeaderView::section:checked{
     background-color: #165f93;
-	font: bold 14px;
+	font: bold;
 }
 
 QTableView{
 	background-color: #1e1e1e;
+	alternate-background-color: #242424;
 	border: 1px solid #3f3f46;
-	color: #f1f1f1;
 	gridline-color: #3f3f46;
 	outline: none;
 }
@@ -115,7 +117,6 @@ QTableView::item:selected:!active {
 	outline: none;
 	border: 0px;
 	background-color: #3f3f46;
-	color: #f1f1f1;
 }
 
 QLabel#DirLabel{
