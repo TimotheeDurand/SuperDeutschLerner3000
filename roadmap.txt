@@ -19,4 +19,5 @@ Bonus :
 OK Si modifications non enregistrées -> demander à l'utilisateur s'il est ok pour fermer
 OK changer le style des scrollbars
 - possibilité de réorganiser les mots (glisser déposer)
+- ajouter raccourcis claviers (ctrl+s pour enregister, ctrl+w pour fermer)
 - le bouton s'affiche d'une couleur différente quand le mode est "en cours" -> s'inspirer de VSCode ?
