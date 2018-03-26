@@ -32,6 +32,9 @@ public:
 	virtual void showLessonSaved (QFileInfo lessonFile) override;
 	virtual void showLessonClosed (QFileInfo lessonFile) override;
 	virtual void showTupleAdded (QString originalWord, QString translatedWord, int index) override;
+	virtual void showRowDeleted (QString old_originalWord, QString old_translatedWord, int index) override;
+	virtual void showFileCreated (QFileInfo lessonFile) override;
+	virtual void showFileDeleted (QFileInfo lessonFile) override;
 
 private:
 	bool listenKeyBoardInput ();

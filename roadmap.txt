@@ -12,7 +12,7 @@ OK possibilité de supprimer un mot
 OK bouton pour sauvegarder une leçon
 OK bouton pour modifier une leçon déjà existante
 OK en mode affichage / entrainement, on ne peux pas sélectionner les mots
-- fichier .les associés avec l'application, double clic sur le fichier lance l'application avec ce fichier affiché
+OK fichier .les associés avec l'application, double clic sur le fichier lance l'application avec ce fichier affiché
 - retenir le dernier workspace utilisé lors de la fermeture de l'application
 
 

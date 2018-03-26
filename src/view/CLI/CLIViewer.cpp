@@ -185,6 +185,21 @@ void CLIViewer::showTupleAdded (QString originalWord, QString translatedWord, in
 	//todo
 }
 
+void CLIViewer::showRowDeleted (QString old_originalWord, QString old_translatedWord, int index)
+{
+	//todo
+}
+
+void CLIViewer::showFileCreated (QFileInfo lessonFile)
+{
+	//todo
+}
+
+void CLIViewer::showFileDeleted (QFileInfo lessonFile)
+{
+	//todo
+}
+
 bool CLIViewer::listenKeyBoardInput ()
 {
 	QString userInput;

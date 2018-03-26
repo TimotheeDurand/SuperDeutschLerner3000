@@ -331,18 +331,29 @@ void MainWindow::giveAnswer (QString originalWord, QString translatedWord, bool 
 
 void MainWindow::showFullLesson (QFileInfo lessonFile, QVector<std::pair<QString, QString>> tuples)
 {
-	resetTableAndInfo ();
-	m_wordsTable->setSelectionMode (QAbstractItemView::NoSelection);
-	for(auto tuple : tuples)
-	{ 
-		QStandardItem *itemOri = new QStandardItem (tuple.first);
-		QStandardItem *itemTr = new QStandardItem (tuple.second);
-		m_wordListModel->appendRow ({ itemOri, itemTr });
+	static bool preventMultiple = false;
+	if (!preventMultiple)
+	{
+		preventMultiple = true;
+		resetTableAndInfo ();
+		QModelIndexList idxs = m_lessonListModel->match (m_lessonsListView->indexAt (QPoint (0, 0)), Qt::EditRole, lessonFile.fileName ());
+		if (!idxs.empty ())
+		{
+			m_lessonsListView->setCurrentIndex (idxs.first ());
+		}
+		m_wordsTable->setSelectionMode (QAbstractItemView::NoSelection);
+		for (auto tuple : tuples)
+		{
+			QStandardItem *itemOri = new QStandardItem (tuple.first);
+			QStandardItem *itemTr = new QStandardItem (tuple.second);
+			m_wordListModel->appendRow ({ itemOri, itemTr });
+		}
+		m_currentWordCount = tuples.size ();
+		setInfo ("file: \'" + lessonFile.absoluteFilePath () + "\'");
+		QString strInfo = QString::number (tuples.size ()) + " words";
+		setInfoWord (strInfo);
+		preventMultiple = false;
 	}
-	m_currentWordCount = tuples.size ();
-	setInfo ("file: \'" + lessonFile.absoluteFilePath() + "\'");
-	QString strInfo = QString::number(tuples.size ()) + " words";
-	setInfoWord(strInfo);
 }
 
 void MainWindow::showEditingStarted (QFileInfo fileInfos, QVector<std::pair<QString, QString>>& tuples)

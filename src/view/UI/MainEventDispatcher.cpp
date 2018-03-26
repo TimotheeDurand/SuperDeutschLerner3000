@@ -31,7 +31,7 @@ void MainEventDispatcher::onLessonSelected (const QModelIndex & index)
 {
 	m_mainWindow->disableLessonInteractionButtons (false);
 	QStandardItem *item = m_mainWindow->getLessonModel ()->item (index.row ());
-	QString fileName = m_controller->getFolderPath().absolutePath() + "/" + item->text ();
+	QString fileName = m_controller->getFolderPath ().absolutePath () + "/" + item->text ();
 	if (!fileName.isEmpty ())
 		m_controller->showLesson (fileName);
 }
