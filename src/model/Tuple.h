@@ -4,7 +4,7 @@
 #include <QString>
 #include <QTextStream>
 
-#define TUPLE_REGEX_STRING "[a-zäöüß\',!\\?\\.\\s]+\\s:\\s[a-zàâçéèêëîïôûùüÿæœ\',!\\?\\.\\s]+"
+#define TUPLE_REGEX_STRING "[a-zäöüß\',!\\?\\.\\s]+\\s:\\s[a-zà\\-âçéèêëîïôûùüÿæœ\',!\\?\\.\\s]+"
 
 /* Class Tuple:
 	
