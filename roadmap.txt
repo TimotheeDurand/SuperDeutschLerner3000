@@ -15,8 +15,8 @@ OK en mode affichage / entrainement, on ne peux pas sélectionner les mots
 OK fichier .les associés avec l'application, double clic sur le fichier lance l'application avec ce fichier affiché
 OK retenir le dernier workspace utilisé lors de la fermeture de l'application
 
-
 Bonus :
+OK Si modifications non enregistrées -> demander à l'utilisateur s'il est ok pour fermer
 - changer le style des scrollbars
 - possibilité de réorganiser les mots (glisser déposer)
 - le bouton s'affiche d'une couleur différente quand le mode est "en cours" -> s'inspirer de VSCode ?

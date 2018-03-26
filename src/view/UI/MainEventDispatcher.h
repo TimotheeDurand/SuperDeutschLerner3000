@@ -27,6 +27,7 @@ public slots:
 	void onButtonCloseEditingClicked ();
 	void onButtonSaveLessonClicked ();
 	void onButtonDeleteRowClicked ();
+	void onCloseEvent ();
 
 private:
 	void onLessonSelected (const QModelIndex & index);

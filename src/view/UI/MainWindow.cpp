@@ -488,6 +488,12 @@ void MainWindow::disableLessonInteractionButtons (bool disable)
 	m_editLessonButton->setDisabled (disable);
 }
 
+void MainWindow::closeEvent (QCloseEvent * event)
+{
+	m_eventDispatcher->onCloseEvent ();
+	QWidget::closeEvent (event);
+}
+
 void MainWindow::setInfo (const QString &info)
 {
 	m_infoLabel->setText (info);
@@ -535,14 +541,16 @@ QStandardItem* MainWindow::getSelectedLesson ()
 	return item;
 }
 
-QMessageBox::StandardButton MainWindow::shouldWeSave ()
+QMessageBox::StandardButton MainWindow::shouldWeSave (bool canCancel)
 {
 	if (m_modified)
 	{
 		QMessageBox msg;
 		msg.setWindowTitle ("Lesson modified");
 		msg.setText ("Save before closing ?");
-		msg.setStandardButtons (QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
+		msg.addButton (QMessageBox::Yes);
+		msg.addButton (QMessageBox::No);
+		if (canCancel) msg.addButton (QMessageBox::Cancel);
 		return (QMessageBox::StandardButton)msg.exec ();
 	}
 	return QMessageBox::StandardButton::No;

@@ -126,7 +126,7 @@ void MainEventDispatcher::onButtonStartEditingClicked ()
 
 void MainEventDispatcher::onButtonCloseEditingClicked ()
 {
-	QMessageBox::StandardButton reply = m_mainWindow->shouldWeSave ();
+	QMessageBox::StandardButton reply = m_mainWindow->shouldWeSave (true);
 	switch (reply)
 	{
 	case QMessageBox::Yes:
@@ -153,5 +153,20 @@ void MainEventDispatcher::onButtonDeleteRowClicked ()
 	if (row != NO_ROW)
 	{
 		m_controller->deleteTuple (row);
+	}
+}
+
+void MainEventDispatcher::onCloseEvent ()
+{
+	QMessageBox::StandardButton reply = m_mainWindow->shouldWeSave (false);
+	switch (reply)
+	{
+	case QMessageBox::Yes:
+		m_controller->saveLesson ();
+		m_controller->closeLesson ();
+		return;
+	case QMessageBox::No:
+		m_controller->closeLesson ();
+		return;
 	}
 }

@@ -70,9 +70,11 @@ public:
 	QModelIndex* getLastAskedIndex () { return lastAsked; }
 	QStandardItem* getSelectedLesson ();
 
-	QMessageBox::StandardButton shouldWeSave ();
+	QMessageBox::StandardButton shouldWeSave (bool canCancel);
 
 protected:
+	void closeEvent (QCloseEvent *event);
+
 	void setInfo (const QString &info);
 	void setInfoWord (const QString &infoWords);
 	void setInfoScore (const QString &infoScore);
