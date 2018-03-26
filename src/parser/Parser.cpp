@@ -26,6 +26,8 @@ Parser::IOStatus Parser::writeFile (Lesson & lesson, const QFileInfo& fileInfo)
 	if (file.open (QIODevice::ReadWrite | QIODevice::Truncate | QIODevice::Text))
 	{
 		QTextStream out(&file);
+		out.setCodec ("UTF-8");
+		out.setGenerateByteOrderMark (true);
 		out << lesson;
 		file.close ();
 	}

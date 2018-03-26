@@ -81,6 +81,10 @@ void StateInitial::createNewLessonFile (Controller & controller) const
 
 	if (newFile.open (QIODevice::WriteOnly))
 	{
+		QTextStream stream(&newFile);
+		stream.setGenerateByteOrderMark(true);
+		newFile.close ();
+
 		//write something ?
 		controller.getViewer ()->showFileCreated (check_file);
 		controller.refreshLessons ();
