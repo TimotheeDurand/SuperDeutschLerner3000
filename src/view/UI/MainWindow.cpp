@@ -3,7 +3,6 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QHeaderView>
-#include <QMessageBox>
 #include <QPixmap>
 #include <QFileDialog>
 #include <QTextStream>
@@ -359,6 +358,7 @@ void MainWindow::showFullLesson (QFileInfo lessonFile, QVector<std::pair<QString
 void MainWindow::showEditingStarted (QFileInfo fileInfos, QVector<std::pair<QString, QString>>& tuples)
 {
 	resetTableAndInfo ();
+	m_modified = false;
 	setDownRibbonColor (EDITING_COLOR_BG, EDITING_COLOR_FG);
 	setInfo ("You are now editing \'" + fileInfos.fileName () + "\'");
 	m_wordsTable->setSelectionMode (QAbstractItemView::SingleSelection);
@@ -423,18 +423,24 @@ void MainWindow::showTupleAdded (QString originalWord, QString translatedWord, i
 		m_wordsTable->setCurrentIndex (newItemIdx);
 		m_wordsTable->edit (newItemIdx);
 	}
-	QString strInfo = QString::number (m_wordListModel->rowCount ()) + " words";
+	m_modified = true;
+	QString strInfo = QString::number (m_wordListModel->rowCount ()-1) + " words";
+	setInfoWord (strInfo);
 }
 
 void MainWindow::showRowDeleted (QString old_originalWord, QString old_translatedWord, int index)
 {
 	setInfo ("Word deleted : \'" + old_originalWord + " : " + old_translatedWord + "\'");
 	m_wordListModel->removeRow (index);
+	m_modified = true;
+	QString strInfo = QString::number (m_wordListModel->rowCount ()-1) + " words";
+	setInfoWord (strInfo);
 }
 
 void MainWindow::showLessonSaved (QFileInfo lessonFile)
 {
 	setInfo ("\'" + lessonFile.fileName () + "\' successfully saved");
+	m_modified = false;
 }
 
 void MainWindow::showLessonClosed (QFileInfo lessonFile)
@@ -527,6 +533,19 @@ QStandardItem* MainWindow::getSelectedLesson ()
 		item = m_lessonListModel->item (idx.row ());
 	}
 	return item;
+}
+
+QMessageBox::StandardButton MainWindow::shouldWeSave ()
+{
+	if (m_modified)
+	{
+		QMessageBox msg;
+		msg.setWindowTitle ("Lesson modified");
+		msg.setText ("Save before closing ?");
+		msg.setStandardButtons (QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
+		return (QMessageBox::StandardButton)msg.exec ();
+	}
+	return QMessageBox::StandardButton::No;
 }
 
 int MainWindow::getSelectedRow ()

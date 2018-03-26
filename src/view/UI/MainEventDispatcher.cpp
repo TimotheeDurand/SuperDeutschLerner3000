@@ -126,7 +126,20 @@ void MainEventDispatcher::onButtonStartEditingClicked ()
 
 void MainEventDispatcher::onButtonCloseEditingClicked ()
 {
-	m_controller->closeLesson ();
+	QMessageBox::StandardButton reply = m_mainWindow->shouldWeSave ();
+	switch (reply)
+	{
+	case QMessageBox::Yes:
+		m_controller->saveLesson ();
+		m_controller->closeLesson ();
+		break;
+	case QMessageBox::No:
+		m_controller->closeLesson ();
+		break;
+	case QMessageBox::Cancel:
+		//do nothing
+		break;
+	}
 }
 
 void MainEventDispatcher::onButtonSaveLessonClicked ()

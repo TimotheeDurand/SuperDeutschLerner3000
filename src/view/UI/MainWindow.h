@@ -6,6 +6,7 @@
 #include <QTableView>
 #include <QPushButton>
 #include <QStandardItemModel>
+#include <QMessageBox>
 #include <QLabel>
 
 #include "src\view\GenericViewer.h"
@@ -69,6 +70,8 @@ public:
 	QModelIndex* getLastAskedIndex () { return lastAsked; }
 	QStandardItem* getSelectedLesson ();
 
+	QMessageBox::StandardButton shouldWeSave ();
+
 protected:
 	void setInfo (const QString &info);
 	void setInfoWord (const QString &infoWords);
@@ -114,4 +117,7 @@ protected:
 	QString m_newLessonName = "";
 
 	bool m_dontListenEdit = false;
+	
+	// variable used to keep track of editing
+	bool m_modified = false;
 };
