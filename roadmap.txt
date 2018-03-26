@@ -17,6 +17,6 @@ OK retenir le dernier workspace utilisé lors de la fermeture de l'application
 
 Bonus :
 OK Si modifications non enregistrées -> demander à l'utilisateur s'il est ok pour fermer
-- changer le style des scrollbars
+OK changer le style des scrollbars
 - possibilité de réorganiser les mots (glisser déposer)
 - le bouton s'affiche d'une couleur différente quand le mode est "en cours" -> s'inspirer de VSCode ?
