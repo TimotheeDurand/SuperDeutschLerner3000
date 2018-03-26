@@ -446,6 +446,7 @@ void MainWindow::showLessonSaved (QFileInfo lessonFile)
 void MainWindow::showLessonClosed (QFileInfo lessonFile)
 {
 	setFocus ();
+	m_modified = false;
 	m_wordsTable->clearSelection ();
 	m_wordsTable->setSelectionMode (QAbstractItemView::NoSelection);
 	m_wordsTable->setEditTriggers (QAbstractItemView::NoEditTriggers);

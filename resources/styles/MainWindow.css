@@ -27,6 +27,40 @@ QSplitter::handle{
 	background: #2d2d30;
 }
 
+QScrollBar:vertical {
+	border: none;
+	background: #3e3e42;
+	width: 20px;
+	margin: 20px 0px 20px 0px;
+}
+
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+    background: none;
+}
+
+QScrollBar::handle:vertical {
+	background: #686868;
+	min-height: 20px;
+	margin: 5px;
+}
+
+QScrollBar::add-line:vertical {
+	background: #3e3e42;
+	height: 20px;
+	subcontrol-position: bottom;
+	border-image: url(:/icons/arrowDown.svg);
+	subcontrol-origin: margin;
+}
+
+QScrollBar::sub-line:vertical {
+	background: #3e3e42;
+	height: 20px;
+	subcontrol-position: top;
+	border-image: url(:/icons/arrowUp.svg);
+	subcontrol-origin: margin;
+}
+
+
 QListView{
 	background-color: #252526;
 	color: #f1f1f1;
@@ -38,7 +72,7 @@ QListView::item{
 	padding: 3px;
 }
 
-QListView::item:selected:active {
+QListView::item:selected:active{
     background-color: #007acc;
 	color: #f1f1f1;
 }
@@ -55,11 +89,10 @@ QHeaderView::section{
 	font: 14px;
 	padding: 8px;
 	border: 1px solid #3f3f46;
-	border-width: 0px 1px 1px 0px
+	border-width: 0px 1px 1px 0px;
 }
 
-QHeaderView::section:checked
-{
+QHeaderView::section:checked{
     background-color: #165f93;
 	font: bold 14px;
 }
